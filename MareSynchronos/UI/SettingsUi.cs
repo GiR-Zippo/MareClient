@@ -50,6 +50,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
     private readonly PairManager _pairManager;
     private readonly PerformanceCollectorService _performanceCollector;
     private readonly PlayerPerformanceConfigService _playerPerformanceConfigService;
+    private readonly AccountRegistrationService _registerService;
     private readonly ServerConfigurationManager _serverConfigurationManager;
     private readonly UiSharedService _uiShared;
     private readonly IProgress<(int, int, FileCacheEntity)> _validationProgress;
@@ -77,7 +78,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
         FileCacheManager fileCacheManager,
         FileCompactor fileCompactor, ApiController apiController,
         IpcManager ipcManager, CacheMonitor cacheMonitor,
-        DalamudUtilService dalamudUtilService, HttpClient httpClient) : base(logger, mediator, "Mare Synchronos Settings", performanceCollector)
+        DalamudUtilService dalamudUtilService, HttpClient httpClient, AccountRegistrationService registerService) : base(logger, mediator, "Mare Synchronos Settings", performanceCollector)
     {
         _configService = configService;
         _pairManager = pairManager;
@@ -92,6 +93,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
         _cacheMonitor = cacheMonitor;
         _dalamudUtilService = dalamudUtilService;
         _httpClient = httpClient;
+        _registerService = registerService;
         _fileCompactor = fileCompactor;
         _uiShared = uiShared;
         AllowClickthrough = false;
@@ -1402,7 +1404,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
         }
 
         bool useOauth = selectedServer.UseOAuth2;
-
+        bool UseOldProtocol = selectedServer.UseOldProtocol;
         if (ImGui.BeginTabBar("serverTabBar"))
         {
             if (ImGui.BeginTabItem("Character Management"))
@@ -1672,6 +1674,8 @@ public class SettingsUi : WindowMediatorSubscriberBase
                     _serverConfigurationManager.Save();
                 }
 
+                _uiShared.DrawAutoregister(_registerService, selectedServer);
+
                 ImGui.EndTabItem();
             }
 
@@ -1749,6 +1753,12 @@ public class SettingsUi : WindowMediatorSubscriberBase
                             ImGuiColors.DalamudRed);
                     }
                 }
+                if (ImGui.Checkbox("Use Old Protocol", ref UseOldProtocol))
+                {
+                    selectedServer.UseOldProtocol = UseOldProtocol;
+                    _serverConfigurationManager.Save();
+                }
+                _uiShared.DrawHelpText("Use the old mare protocol like SnowCloak and derivates uses.");
 
                 if (!isMain && selectedServer != _serverConfigurationManager.CurrentServer)
                 {

@@ -21,8 +21,10 @@ namespace MareSynchronos.WebAPI;
 #pragma warning disable MA0040
 public sealed partial class ApiController : DisposableMediatorSubscriberBase, IMareHubClient
 {
-    public const string MainServer = "Lunae Crescere Incipientis (Official Central Server)";
-    public const string MainServiceUri = "wss://maresynchronos.com";
+    public const string MainServer = "Lunae Crescere Incipientis (localhost)";
+    public const string MainServiceUri = "wss://localhost";
+    public const string MainServiceApiUri = "wss://hub.snowcloak-sync.com/";
+    public const string MainServiceHubUri = "wss://hub.snowcloak-sync.com/mare";
 
     private readonly DalamudUtilService _dalamudUtil;
     private readonly HubFactory _hubFactory;
@@ -222,7 +224,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
 
                 if (token.IsCancellationRequested) break;
 
-                _mareHub = _hubFactory.GetOrCreate(token);
+                _mareHub = await _hubFactory.GetOrCreate(token);
                 InitializeApiHooks();
 
                 await _mareHub.StartAsync(token).ConfigureAwait(false);
@@ -232,8 +234,10 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 ServerState = ServerState.Connected;
 
                 var currentClientVer = Assembly.GetExecutingAssembly().GetName().Version!;
-
-                if (_connectionDto.ServerVersion != IMareHub.ApiVersion)
+                
+                Logger.LogInformation("Versions: {_connectionDto.ServerVersion} - {IMareHub.ApiVersion}", _connectionDto.ServerVersion, IMareHub.ApiVersion);
+                Logger.LogInformation("Versions: {_connectionDto.CurrentClientVersion} - {currentClientVer}", _connectionDto.CurrentClientVersion, currentClientVer);
+                if ((_connectionDto.ServerVersion != IMareHub.ApiVersion) && (_connectionDto.ServerVersion != IMareHub.AltApiVersion))
                 {
                     if (_connectionDto.CurrentClientVersion > currentClientVer)
                     {
@@ -464,28 +468,61 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
             Logger.LogDebug("Group: {entry}", entry);
             _pairManager.AddGroup(entry);
         }
-
         foreach (var userPair in await UserGetPairedClients().ConfigureAwait(false))
         {
             Logger.LogDebug("Individual Pair: {userPair}", userPair);
-            _pairManager.AddUserPair(userPair);
+            // since the old proto doesn't provide us directly with these data, autofill...
+            if (_serverManager.CurrentServer.UseOldProtocol)
+            {
+                userPair.OwnPermissions = API.Data.Enum.UserPermissions.NoneSet;
+                userPair.OtherPermissions = API.Data.Enum.UserPermissions.NoneSet;
+                userPair.IndividualPairStatus = API.Data.Enum.IndividualPairStatus.Bidirectional;
+                _pairManager.AddUserPair(userPair, false);
+                _pairManager.MarkPairOffline(userPair.User);
+            }
+            else
+                _pairManager.AddUserPair(userPair);
+        }
+
+        if (_serverManager.CurrentServer.UseOldProtocol)
+        {
+            foreach (var group in _pairManager.GroupPairs.Keys)
+            {
+                var users = await GroupsGetUsersInGroup(group).ConfigureAwait(false);
+                foreach (var user in users)
+                {
+                    Logger.LogDebug("Group Pair: {user}", user);
+                    _pairManager.AddGroupPair(user);
+                }
+            }
         }
     }
 
     private async Task LoadOnlinePairsAsync()
     {
-        CensusDataDto? dto = null;
+        CensusDataDto ? dto = null;
         if (_serverManager.SendCensusData && _lastCensus != null)
         {
             var world = await _dalamudUtil.GetWorldIdAsync().ConfigureAwait(false);
             dto = new((ushort)world, _lastCensus.RaceId, _lastCensus.TribeId, _lastCensus.Gender);
             Logger.LogDebug("Attaching Census Data: {data}", dto);
         }
-
-        foreach (var entry in await UserGetOnlinePairs(dto).ConfigureAwait(false))
+        
+        if (_serverManager.CurrentServer.UseOldProtocol)
         {
-            Logger.LogDebug("Pair online: {pair}", entry);
-            _pairManager.MarkPairOnline(entry, sendNotif: false);
+            foreach (var entry in await UserGetOnlinePairs().ConfigureAwait(false))
+            {
+                Logger.LogDebug("Pair online: {pair}", entry);
+                _pairManager.MarkPairOnline(entry, sendNotif: false);
+            }
+        }
+        else
+        {
+            foreach (var entry in await UserGetOnlinePairs(dto).ConfigureAwait(false))
+            {
+                Logger.LogDebug("Pair online: {pair}", entry);
+                _pairManager.MarkPairOnline(entry, sendNotif: false);
+            }
         }
     }
 
@@ -511,7 +548,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
         {
             InitializeApiHooks();
             _connectionDto = await GetConnectionDtoAsync(publishConnected: false).ConfigureAwait(false);
-            if (_connectionDto.ServerVersion != IMareHub.ApiVersion)
+            if ((_connectionDto.ServerVersion != IMareHub.ApiVersion) && (_connectionDto.ServerVersion != IMareHub.AltApiVersion))
             {
                 await StopConnectionAsync(ServerState.VersionMisMatch).ConfigureAwait(false);
                 return;

@@ -41,6 +41,11 @@ public partial class ApiController
         await CreateConnectionsAsync().ConfigureAwait(false);
     }
 
+    public async Task<List<OnlineUserIdentDto>> UserGetOnlinePairs()
+    {
+        return await _mareHub!.InvokeAsync<List<OnlineUserIdentDto>>(nameof(UserGetOnlinePairs)).ConfigureAwait(false);
+    }
+
     public async Task<List<OnlineUserIdentDto>> UserGetOnlinePairs(CensusDataDto? censusDataDto)
     {
         return await _mareHub!.InvokeAsync<List<OnlineUserIdentDto>>(nameof(UserGetOnlinePairs), censusDataDto).ConfigureAwait(false);

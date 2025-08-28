@@ -111,6 +111,12 @@ public partial class ApiController
         return await _mareHub!.InvokeAsync<List<GroupFullInfoDto>>(nameof(GroupsGetAll)).ConfigureAwait(false);
     }
 
+    public async Task<List<GroupPairFullInfoDto>> GroupsGetUsersInGroup(GroupDto group)
+    {
+        CheckConnection();
+        return await _mareHub!.InvokeAsync<List<GroupPairFullInfoDto>>(nameof(GroupsGetUsersInGroup), group).ConfigureAwait(false);
+    }
+
     public async Task GroupUnbanUser(GroupPairDto groupPair)
     {
         CheckConnection();

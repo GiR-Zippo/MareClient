@@ -73,6 +73,10 @@ public partial class UiSharedService : DisposableMediatorSubscriberBase
     private bool _penumbraExists = false;
     private bool _petNamesExists = false;
     private int _serverSelectionIndex = -1;
+    private bool _registrationInProgress = false;
+    private bool _registrationSuccess = false;
+    private string? _registrationMessage;
+
     public UiSharedService(ILogger<UiSharedService> logger, IpcManager ipcManager, ApiController apiController,
         CacheMonitor cacheMonitor, FileDialogManager fileDialogManager,
         MareConfigService configService, DalamudUtilService dalamudUtil, IDalamudPluginInterface pluginInterface,
@@ -895,6 +899,63 @@ public partial class UiSharedService : DisposableMediatorSubscriberBase
 
         return _serverSelectionIndex;
     }
+
+    public bool DrawAutoregister(AccountRegistrationService registerService, ServerStorage selectedServer)
+    {
+        if (true) // Enable registration button for all servers
+        {
+            ImGui.SameLine();
+            if (IconTextButton(FontAwesomeIcon.Plus, "Register a new account"))
+            {
+                _registrationInProgress = true;
+                _ = Task.Run(async () => {
+                    try
+                    {
+                        var reply = await registerService.RegisterAccount(CancellationToken.None).ConfigureAwait(false);
+                        if (!reply.Success)
+                        {
+                            Logger.LogWarning("Registration failed: {err}", reply.ErrorMessage);
+                            _registrationMessage = reply.ErrorMessage;
+                            if (_registrationMessage.IsNullOrEmpty())
+                                _registrationMessage = "An unknown error occured. Please try again later.";
+                            return;
+                        }
+                        _registrationMessage = "New account registered.\nPlease keep a copy of your secret key in case you need to reset your plugins, or to use it on another PC.";
+                        _registrationSuccess = true;
+                        selectedServer.SecretKeys.Add(selectedServer.SecretKeys.Any() ? selectedServer.SecretKeys.Max(p => p.Key) + 1 : 0, new SecretKey()
+                        {
+                            FriendlyName = reply.UID + $" (registered {DateTime.Now:yyyy-MM-dd})",
+                            Key = reply.SecretKey ?? ""
+                        });
+                        _serverConfigurationManager.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogWarning(ex, "Registration failed");
+                        _registrationSuccess = false;
+                        _registrationMessage = "An unknown error occured. Please try again later.";
+                    }
+                    finally
+                    {
+                        _registrationInProgress = false;
+                    }
+                }, CancellationToken.None);
+            }
+            if (_registrationInProgress)
+            {
+                ImGui.TextUnformatted("Sending request...");
+            }
+            else if (!_registrationMessage.IsNullOrEmpty())
+            {
+                if (!_registrationSuccess)
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, _registrationMessage);
+                else
+                    ImGui.TextWrapped(_registrationMessage);
+            }
+        }
+        return _registrationSuccess;
+    }
+
 
     public void DrawUIDComboForAuthentication(int indexOffset, Authentication item, string serverUri, ILogger? logger = null)
     {

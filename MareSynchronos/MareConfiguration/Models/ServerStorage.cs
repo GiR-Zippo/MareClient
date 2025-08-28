@@ -12,6 +12,7 @@ public class ServerStorage
     public string ServerUri { get; set; } = string.Empty;
     public bool UseOAuth2 { get; set; } = false;
     public string? OAuthToken { get; set; } = null;
+    public bool UseOldProtocol { get; set; } = false;
     public HttpTransportType HttpTransportType { get; set; } = HttpTransportType.WebSockets;
     public bool ForceWebSockets { get; set; } = false;
 }
