@@ -1,7 +1,5 @@
-# Mare Synchronos Dalamud Plugin
+# Not Mare Synchronos Dalamud Plugin
 
-Available at [This dalamud Repo](https://raw.githubusercontent.com/MareSynchronos/repo/main/plogonmaster.json)
+Not Available at [This dalamud Repo](https://localhost)
 
-# [Mare Synchronos Discord](https://discord.gg/5HVveFefcB)
-
-Readme TBD
+Just a plugin for testing purposes
