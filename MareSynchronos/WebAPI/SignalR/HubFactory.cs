@@ -1,4 +1,5 @@
-﻿using MareSynchronos.API.SignalR;
+﻿using Dalamud.Utility;
+using MareSynchronos.API.SignalR;
 using MareSynchronos.Services;
 using MareSynchronos.Services.Mediator;
 using MareSynchronos.Services.ServerConfiguration;
@@ -79,32 +80,36 @@ public class HubFactory : MediatorSubscriberBase
     private async Task<HubConnectionConfig> ResolveHubConfig()
     {
         var stapledWellKnown = _tokenProvider.GetStapledWellKnown(_serverConfigurationManager.CurrentApiUrl);
-
         var apiUrl = new Uri(_serverConfigurationManager.CurrentApiUrl);
 
         HubConnectionConfig defaultConfig;
 
+        //Config in cache?
         if (_cachedConfig != null && _serverConfigurationManager.CurrentApiUrl.Equals(_cachedConfigFor, StringComparison.Ordinal))
         {
             defaultConfig = _cachedConfig;
         }
         else
         {
-            defaultConfig = new HubConnectionConfig
-            {
-                HubUrl = _serverConfigurationManager.CurrentApiUrl.TrimEnd('/') + IMareHub.Path,
-                Transports = []
-            };
-        }
-
-        if (_serverConfigurationManager.CurrentApiUrl.Equals(ApiController.MainServiceUri, StringComparison.Ordinal))
-        {
+            //Download the file
             var mainServerConfig = await _remoteConfig.GetConfigAsync<HubConnectionConfig>("mainServer").ConfigureAwait(false) ?? new();
-            defaultConfig = mainServerConfig;
-            if (string.IsNullOrEmpty(mainServerConfig.ApiUrl))
-                defaultConfig.ApiUrl = ApiController.MainServiceApiUri;
-            if (string.IsNullOrEmpty(mainServerConfig.HubUrl))
-                defaultConfig.HubUrl = ApiController.MainServiceHubUri;
+            //Download fail, create deafult config
+            if (mainServerConfig.HubUrl.IsNullOrEmpty())
+            {
+                defaultConfig = new HubConnectionConfig
+                {
+                    HubUrl = _serverConfigurationManager.CurrentApiUrl.TrimEnd('/') + IMareHub.Path,
+                    Transports = []
+                };
+            }
+            else //fill the defaultConfig
+            {
+                defaultConfig = mainServerConfig;
+                if (string.IsNullOrEmpty(mainServerConfig.ApiUrl))
+                    defaultConfig.ApiUrl = mainServerConfig.ApiUrl;
+                if (string.IsNullOrEmpty(mainServerConfig.HubUrl))
+                    defaultConfig.HubUrl = mainServerConfig.HubUrl;
+            }
         }
 
         string jsonResponse;

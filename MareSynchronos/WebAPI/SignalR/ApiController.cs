@@ -235,8 +235,8 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
 
                 var currentClientVer = Assembly.GetExecutingAssembly().GetName().Version!;
                 
-                Logger.LogInformation("Versions: {_connectionDto.ServerVersion} - {IMareHub.ApiVersion}", _connectionDto.ServerVersion, IMareHub.ApiVersion);
-                Logger.LogInformation("Versions: {_connectionDto.CurrentClientVersion} - {currentClientVer}", _connectionDto.CurrentClientVersion, currentClientVer);
+                Logger.LogDebug("ServerVersion/ApiVersion: {_connectionDto.ServerVersion} : {IMareHub.ApiVersion}", _connectionDto.ServerVersion, IMareHub.ApiVersion);
+                Logger.LogDebug("Versions: {_connectionDto.CurrentClientVersion} - {currentClientVer}", _connectionDto.CurrentClientVersion, currentClientVer);
                 if ((_connectionDto.ServerVersion != IMareHub.ApiVersion) && (_connectionDto.ServerVersion != IMareHub.AltApiVersion))
                 {
                     if (_connectionDto.CurrentClientVersion > currentClientVer)
@@ -477,7 +477,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 userPair.OwnPermissions = API.Data.Enum.UserPermissions.NoneSet;
                 userPair.OtherPermissions = API.Data.Enum.UserPermissions.NoneSet;
                 userPair.IndividualPairStatus = API.Data.Enum.IndividualPairStatus.Bidirectional;
-                _pairManager.AddUserPair(userPair, false);
+                _pairManager.AddUserPair(userPair);
                 _pairManager.MarkPairOffline(userPair.User);
             }
             else
