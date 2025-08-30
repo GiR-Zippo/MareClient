@@ -3,10 +3,10 @@
         "Author": "Unknown",
         "Name": "Not Mare Synchronos",
         "InternalName": "MareSynchronos",
-        "AssemblyVersion": "iRELEASE",
+        "AssemblyVersion": "1.12.0",
         "Description": "A useles test plogon.",
         "ApplicableVersion": "any",
-        "RepoUrl": "iPLUGINURL",
+        "RepoUrl": "https://github.com//GiR-Zippo/MareClient",
         "CategoryTags": [
             "utility",
             "other"
@@ -16,9 +16,9 @@
         "Punchline": "A useles test plogon.",
         "IsHide": "False",
         "IsTestingExclusive": "False",
-        "LastUpdate": "iTIME",
-        "DownloadLinkInstall": "iPLUGINURL/releases/download/iRELEASE/latest.zip",
-        "DownloadLinkTesting": "iPLUGINURL/releases/download/iRELEASE/latest.zip",
-        "DownloadLinkUpdate": "iPLUGINURL/releases/download/iRELEASE/latest.zip"
+        "LastUpdate": "1756592047",
+        "DownloadLinkInstall": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.0/latest.zip",
+        "DownloadLinkTesting": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.0/latest.zip",
+        "DownloadLinkUpdate": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.0/latest.zip"
     }
 ]
