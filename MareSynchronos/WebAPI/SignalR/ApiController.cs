@@ -23,8 +23,6 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
 {
     public const string MainServer = "Lunae Crescere Incipientis (localhost)";
     public const string MainServiceUri = "wss://localhost";
-    public const string MainServiceApiUri = "wss://hub.snowcloak-sync.com/";
-    public const string MainServiceHubUri = "wss://hub.snowcloak-sync.com/mare";
 
     private readonly DalamudUtilService _dalamudUtil;
     private readonly HubFactory _hubFactory;

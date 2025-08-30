@@ -463,7 +463,6 @@ public class TopTabMenu
     private void DrawSyncshellMenu(float availableWidth, float spacingX)
     {
         var buttonX = (availableWidth - (spacingX)) / 2f;
-
         using (ImRaii.Disabled(_pairManager.GroupPairs.Select(k => k.Key).Distinct()
             .Count(g => string.Equals(g.OwnerUID, _apiController.UID, StringComparison.Ordinal)) >= _apiController.ServerInfo.MaxGroupsCreatedByUser))
         {

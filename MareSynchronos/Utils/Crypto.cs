@@ -26,9 +26,9 @@ public static class Crypto
             BitConverter.ToString(_sha256CryptoProvider.ComputeHash(Encoding.UTF8.GetBytes(playerToHash.Item1 + playerToHash.Item2.ToString()))).Replace("-", "", StringComparison.Ordinal);
     }
 
-    public static string GetHash256(this string stringToHash)
+    public static string GetHash256(this string stringToHash, bool skipHashlist = false)
     {
-        return GetOrComputeHashSHA256(stringToHash);
+        return skipHashlist ? GetOrComputeHashSHA256Direct(stringToHash) : GetOrComputeHashSHA256(stringToHash);
     }
 
     private static string GetOrComputeHashSHA256(string stringToCompute)
@@ -38,6 +38,11 @@ public static class Crypto
 
         return _hashListSHA256[stringToCompute] =
             BitConverter.ToString(_sha256CryptoProvider.ComputeHash(Encoding.UTF8.GetBytes(stringToCompute))).Replace("-", "", StringComparison.Ordinal);
+    }
+
+    private static string GetOrComputeHashSHA256Direct(string stringToCompute)
+    {
+        return BitConverter.ToString(_sha256CryptoProvider.ComputeHash(Encoding.UTF8.GetBytes(stringToCompute))).Replace("-", "", StringComparison.Ordinal);
     }
 #pragma warning restore SYSLIB0021 // Type or member is obsolete
 }

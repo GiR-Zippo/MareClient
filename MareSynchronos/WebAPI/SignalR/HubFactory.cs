@@ -93,7 +93,7 @@ public class HubFactory : MediatorSubscriberBase
         {
             //Download the file
             var mainServerConfig = await _remoteConfig.GetConfigAsync<HubConnectionConfig>("mainServer").ConfigureAwait(false) ?? new();
-            //Download fail, create deafult config
+            //Download fail, create default config
             if (mainServerConfig.HubUrl.IsNullOrEmpty())
             {
                 defaultConfig = new HubConnectionConfig

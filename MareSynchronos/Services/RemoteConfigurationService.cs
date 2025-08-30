@@ -66,7 +66,7 @@ public sealed class RemoteConfigurationService
     {
         ulong ts = (ulong)((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
         string server = _serverConfiguration.CurrentServer.ServerUri.TrimEnd('/');
-        var configString = "{\"mainServer\":{\"api_url\":\""+ server + "/\",\"hub_url\":\""+ server + "/mare\"},\"noSnap\":{\"listOfPlugins\":[\"Snapper\",\"Snappy\",\"Meddle.Plugin\"]}}";
+        var configString = "{\"mainServer\":{\"api_url\":\""+ server + "/\",\"hub_url\":\""+ server + "/mare\"},\"noSnap\":{\"listOfPlugins\":[\"Meddle.Plugin\"]}}";
 
         _configService.Current.Configuration = JsonNode.Parse(configString)!.AsObject();
         _configService.Current.Timestamp = ts;

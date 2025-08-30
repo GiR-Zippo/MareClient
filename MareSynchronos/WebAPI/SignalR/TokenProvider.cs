@@ -91,15 +91,13 @@ public sealed class TokenProvider : IDisposable, IMediatorSubscriber
                         var config = await _remoteConfig.GetConfigAsync<HubConnectionConfig>("mainServer").ConfigureAwait(false) ?? new();
                         if (!string.IsNullOrEmpty(config.ApiUrl))
                             authApiUrl = config.ApiUrl;
-                        else
-                            authApiUrl = ApiController.MainServiceApiUri;
                     }
 
                     tokenUri = MareAuth.AuthV2FullPath(new Uri(authApiUrl
                         .Replace("wss://", "https://", StringComparison.OrdinalIgnoreCase)
                         .Replace("ws://", "http://", StringComparison.OrdinalIgnoreCase)));
                     var secretKey = _serverManager.GetSecretKey(out _)!;
-                    var auth = secretKey.GetHash256();
+                    var auth = secretKey.GetHash256(true); //change me later
                     result = await _httpClient.PostAsync(tokenUri, new FormUrlEncodedContent([
                         new("auth", auth),
                         new("charaIdent", await _dalamudUtil.GetPlayerNameHashedAsync().ConfigureAwait(false)),
