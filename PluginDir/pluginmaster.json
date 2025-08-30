@@ -1,0 +1,24 @@
+[
+    {
+        "Author": "Unknown",
+        "Name": "Not Mare Synchronos",
+        "InternalName": "MareSynchronos",
+        "AssemblyVersion": "iRELEASE",
+        "Description": "A useles test plogon.",
+        "ApplicableVersion": "any",
+        "RepoUrl": "iPLUGINURL",
+        "CategoryTags": [
+            "utility",
+            "other"
+        ],
+        "LoadPriority": 0,
+        "IconUrl": "https://raw.githubusercontent.com/GiR-Zippo/Hypnotoad-Plugin/master/Data/icon.png",
+        "Punchline": "A useles test plogon.",
+        "IsHide": "False",
+        "IsTestingExclusive": "False",
+        "LastUpdate": "iTIME",
+        "DownloadLinkInstall": "iPLUGINURL/releases/download/iRELEASE/latest.zip",
+        "DownloadLinkTesting": "iPLUGINURL/releases/download/iRELEASE/latest.zip",
+        "DownloadLinkUpdate": "iPLUGINURL/releases/download/iRELEASE/latest.zip"
+    }
+]

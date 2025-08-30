@@ -1,0 +1,18 @@
+{
+  "Author": "Unknown",
+  "Name": "Not Mare Synchronos",
+  "InternalName": "MareSynchronos",
+  "AssemblyVersion": "iRELEASE",
+  "Description": "A useles test plogon.",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "testing"
+  ],
+  "DalamudApiLevel": 13,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "Punchline": "A useles test plogon.",
+  "AcceptsFeedback": true
+}
