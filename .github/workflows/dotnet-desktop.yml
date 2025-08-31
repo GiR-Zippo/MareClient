@@ -16,7 +16,7 @@ jobs:
       - uses: kzrnm/get-net-sdk-project-versions-action@v1
         id: get-version
         with:
-          proj-path: MareSynchronos/MareSynchronos.csproj
+          proj-path: MareSynchronos/Aurora.csproj
       - run: echo "${{steps.get-version.outputs.version}}"
       - run: echo "${{steps.get-version.outputs.version-prefix}}" 
       - run: echo "${{steps.get-version.outputs.version-suffix}}" 
@@ -95,7 +95,7 @@ jobs:
           file_pattern: "./PluginDir/*.json"
 
       - name: Move latest build to Release
-        run: Move-Item -Path ./MareSynchronos/bin/x64/Release/MareSynchronos/* -Destination ./PluginDir/ -Force
+        run: Move-Item -Path ./MareSynchronos/bin/x64/Release/Aurora/* -Destination ./PluginDir/ -Force
         
       - name: Upload Release Asset
         id: upload-release-asset 
