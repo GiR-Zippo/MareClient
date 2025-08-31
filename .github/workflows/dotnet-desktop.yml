@@ -68,8 +68,8 @@ jobs:
       - name: Set plogonUrl in pluginmaster
         run: sed -i 's#iPLUGINURL#${{ github.server_url }}//${{ github.repository }}#g' ./PluginDir/pluginmaster.json
       
-      - name: Set version in MareSynchronos
-        run: sed -i 's/iRELEASE/${{steps.get-version.outputs.version}}/g' ./PluginDir/MareSynchronos.json
+      - name: Set version in Aurora
+        run: sed -i 's/iRELEASE/${{steps.get-version.outputs.version}}/g' ./PluginDir/Aurora.json
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3.0.3
