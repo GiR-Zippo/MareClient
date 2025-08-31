@@ -1,0 +1,11 @@
+{
+    "Author": "SomeoneWeKnow",
+    "Name": "Aurora",
+    "Punchline": "A test plogon.",
+    "Description": "A test plogon to test some tests.",
+    "InternalName": "aurora",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "customization"
+    ]
+}

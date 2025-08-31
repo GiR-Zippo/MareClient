@@ -73,9 +73,9 @@ public partial class IntroUi : WindowMediatorSubscriberBase
 
         if (!_configService.Current.AcceptedAgreement && !_readFirstPage)
         {
-            _uiShared.BigText("Welcome to Mare Synchronos");
+            _uiShared.BigText("Welcome to Aurora");
             ImGui.Separator();
-            UiSharedService.TextWrapped("Mare Synchronos is a plugin that will replicate your full current character state including all Penumbra mods to other paired Mare Synchronos users. " +
+            UiSharedService.TextWrapped("Aurora is a plugin that will replicate your full current character state including all Penumbra mods to other paired Mare Synchronos users. " +
                               "Note that you will have to have Penumbra as well as Glamourer installed to use this plugin.");
             UiSharedService.TextWrapped("We will have to setup a few things first before you can start using this plugin. Click on next to continue.");
 
@@ -236,9 +236,9 @@ public partial class IntroUi : WindowMediatorSubscriberBase
     }
 
     bool UseOldProtocol = false;
+    int serverIdx = 0;
     private void AutoAuth()
     {
-        int serverIdx = 0;
         var selectedServer = _serverConfigurationManager.GetServerByIndex(serverIdx);
         UiSharedService.TextWrapped("Most servers support a auto registration.");
         UiSharedService.TextWrapped("Select your server in the list below or Add Custom Service.");
