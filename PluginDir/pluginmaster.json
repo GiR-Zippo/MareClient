@@ -3,7 +3,7 @@
         "Author": "SomeoneWeKnow",
         "Name": "Aurora",
         "InternalName": "aurora",
-        "AssemblyVersion": "1.12.1",
+        "AssemblyVersion": "1.12.2",
         "Description": "A useles test plogon.",
         "ApplicableVersion": "any",
         "RepoUrl": "https://github.com//GiR-Zippo/MareClient",
@@ -16,9 +16,9 @@
         "Punchline": "A useles test plogon.",
         "IsHide": "False",
         "IsTestingExclusive": "False",
-        "LastUpdate": "1756605390",
-        "DownloadLinkInstall": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.1/latest.zip",
-        "DownloadLinkTesting": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.1/latest.zip",
-        "DownloadLinkUpdate": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.1/latest.zip"
+        "LastUpdate": "1756752677",
+        "DownloadLinkInstall": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.2/latest.zip",
+        "DownloadLinkTesting": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.2/latest.zip",
+        "DownloadLinkUpdate": "https://github.com//GiR-Zippo/MareClient/releases/download/1.12.2/latest.zip"
     }
 ]
