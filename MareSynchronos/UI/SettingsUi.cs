@@ -1492,7 +1492,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
                         ImGui.Separator();
                         ImGuiHelpers.ScaledDummy(5);
                     }
-                    foreach (var item in selectedServer.Authentications.ToList())
+                    foreach (var item in selectedServer.Authentications)
                     {
                         using var charaId = ImRaii.PushId("selectedChara" + i);
 
@@ -1584,12 +1584,12 @@ public class SettingsUi : WindowMediatorSubscriberBase
                             _uiShared.DrawUIDComboForAuthentication(i, item, selectedServer.ServerUri, _logger);
                         }
                         bool isAutoLogin = item.AutoLogin;
-                        if (ImGui.Checkbox("Automatically login to Mare", ref isAutoLogin))
+                        if (ImGui.Checkbox("Automatically login", ref isAutoLogin))
                         {
                             item.AutoLogin = isAutoLogin;
                             _serverConfigurationManager.Save();
                         }
-                        _uiShared.DrawHelpText("When enabled and logging into this character in XIV, Mare will automatically connect to the current service.");
+                        _uiShared.DrawHelpText("When enabled and logging into this character in XIV, Aurora will automatically connect to the current service.");
                         if (_uiShared.IconTextButton(FontAwesomeIcon.Trash, "Delete Character") && UiSharedService.CtrlPressed())
                             _serverConfigurationManager.RemoveCharacterFromServer(idx, item);
                         UiSharedService.AttachToolTip("Hold CTRL to delete this entry.");

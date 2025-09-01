@@ -33,6 +33,7 @@ public sealed class RemoteConfigurationService
 
     public async Task<T?> GetConfigAsync<T>(string sectionName)
     {
+        return default;
         try
         {
             var json = await GetConfigAsync(sectionName).ConfigureAwait(false);
@@ -61,7 +62,6 @@ public sealed class RemoteConfigurationService
         return Ed25519.Verify(sig, msg, pub);
     }
 
-    //Hardcoded config will never fail... nice...
     private void LoadConfig()
     {
         ulong ts = (ulong)((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
