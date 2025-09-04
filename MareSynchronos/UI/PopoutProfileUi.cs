@@ -143,7 +143,7 @@ public class PopoutProfileUi : WindowMediatorSubscriberBase
                     UiSharedService.ColorText("They: paused", ImGuiColors.DalamudYellow);
                 }
             }
-            if (_pair.UserPair.Groups.Any())
+            if (_pair.UserPair.Groups.Count != 0)
             {
                 ImGui.TextUnformatted("Paired through Syncshells:");
                 foreach (var group in _pair.UserPair.Groups)
