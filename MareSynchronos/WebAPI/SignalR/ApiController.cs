@@ -466,24 +466,21 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
             Logger.LogDebug("Group: {entry}", entry);
             _pairManager.AddGroup(entry);
         }
-        foreach (var userPair in await UserGetPairedClients().ConfigureAwait(false))
-        {
-            Logger.LogDebug("Individual Pair: {userPair}", userPair);
-            // since the old proto doesn't provide us directly with these data, autofill...
-            if (_serverManager.CurrentServer.UseOldProtocol)
-            {
-                userPair.OwnPermissions = API.Data.Enum.UserPermissions.NoneSet;
-                userPair.OtherPermissions = API.Data.Enum.UserPermissions.NoneSet;
-                userPair.IndividualPairStatus = API.Data.Enum.IndividualPairStatus.Bidirectional;
-                _pairManager.AddUserPair(userPair);
-                _pairManager.MarkPairOffline(userPair.User);
-            }
-            else
-                _pairManager.AddUserPair(userPair);
-        }
-
         if (_serverManager.CurrentServer.UseOldProtocol)
         {
+            foreach (var userPair in await UserGetPairedClientsOld().ConfigureAwait(false))
+            {
+                Logger.LogDebug("Individual Pair: {userPair}", userPair);
+                // since the old proto doesn't provide us directly with these data, autofill...
+                if (_serverManager.CurrentServer.UseOldProtocol)
+                {
+                    userPair.OwnPermissions = API.Data.Enum.UserPermissions.NoneSet;
+                    userPair.OtherPermissions = API.Data.Enum.UserPermissions.NoneSet;
+                    userPair.IndividualPairStatus = API.Data.Enum.IndividualPairStatus.Bidirectional;
+                    _pairManager.AddUserPair(userPair, false);
+                    _pairManager.MarkPairOffline(userPair.User);
+                }
+            }
             foreach (var group in _pairManager.GroupPairs.Keys)
             {
                 var users = await GroupsGetUsersInGroup(group).ConfigureAwait(false);
@@ -492,6 +489,14 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                     Logger.LogDebug("Group Pair: {user}", user);
                     _pairManager.AddGroupPair(user);
                 }
+            }
+        }
+        else
+        {
+            foreach (var userPair in await UserGetPairedClients().ConfigureAwait(false))
+            {
+                Logger.LogDebug("Individual Pair: {userPair}", userPair);
+                _pairManager.AddUserPair(userPair);
             }
         }
     }

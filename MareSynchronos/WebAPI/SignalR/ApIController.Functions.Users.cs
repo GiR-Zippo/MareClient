@@ -56,6 +56,11 @@ public partial class ApiController
         return await _mareHub!.InvokeAsync<List<UserFullPairDto>>(nameof(UserGetPairedClients)).ConfigureAwait(false);
     }
 
+    public async Task<List<UserPairDto>> UserGetPairedClientsOld()
+    {
+        return await _mareHub!.InvokeAsync<List<UserPairDto>>(nameof(UserGetPairedClients)).ConfigureAwait(false);
+    }
+
     public async Task<UserProfileDto> UserGetProfile(UserDto dto)
     {
         if (!IsConnected) return new UserProfileDto(dto.User, Disabled: false, IsNSFW: null, ProfilePictureBase64: null, Description: null);
