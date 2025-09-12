@@ -1948,12 +1948,6 @@ public class SettingsUi : WindowMediatorSubscriberBase
         }
 
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("Community and Support:");
-        ImGui.SameLine();
-        if (ImGui.Button("Mare Synchronos Discord"))
-        {
-            Util.OpenLink("https://discord.gg/mpNdkrTRjW");
-        }
         ImGui.Separator();
         if (ImGui.BeginTabBar("mainTabBar"))
         {
