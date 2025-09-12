@@ -78,7 +78,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
         FileCacheManager fileCacheManager,
         FileCompactor fileCompactor, ApiController apiController,
         IpcManager ipcManager, CacheMonitor cacheMonitor,
-        DalamudUtilService dalamudUtilService, HttpClient httpClient, AccountRegistrationService registerService) : base(logger, mediator, "Mare Synchronos Settings", performanceCollector)
+        DalamudUtilService dalamudUtilService, HttpClient httpClient, AccountRegistrationService registerService) : base(logger, mediator, "Aurora Client Settings", performanceCollector)
     {
         _configService = configService;
         _pairManager = pairManager;
