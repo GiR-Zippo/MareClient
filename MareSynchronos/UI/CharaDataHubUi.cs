@@ -15,6 +15,7 @@ using MareSynchronos.Services.Mediator;
 using MareSynchronos.Services.ServerConfiguration;
 using MareSynchronos.Utils;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace MareSynchronos.UI;
 

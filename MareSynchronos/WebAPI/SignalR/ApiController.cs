@@ -14,6 +14,7 @@ using MareSynchronos.WebAPI.SignalR;
 using MareSynchronos.WebAPI.SignalR.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Reflection;
 
 namespace MareSynchronos.WebAPI;
@@ -123,7 +124,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
             Logger.LogInformation("Not recreating Connection, paused");
             _connectionDto = null;
             await StopConnectionAsync(ServerState.Disconnected).ConfigureAwait(false);
-            _connectionCancellationTokenSource?.Cancel();
+            _connectionCancellationTokenSource?.CancelAsync();
             return;
         }
 
@@ -137,7 +138,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 Mediator.Publish(new NotificationMessage("Multiple Identical Characters detected", "Your Service configuration has multiple characters with the same name and world set up. Delete the duplicates in the character management to be able to connect to Mare.",
                     NotificationType.Error));
                 await StopConnectionAsync(ServerState.MultiChara).ConfigureAwait(false);
-                _connectionCancellationTokenSource?.Cancel();
+                _connectionCancellationTokenSource?.CancelAsync();
                 return;
             }
 
@@ -146,7 +147,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 Logger.LogWarning("No secret key set for current character");
                 _connectionDto = null;
                 await StopConnectionAsync(ServerState.NoSecretKey).ConfigureAwait(false);
-                _connectionCancellationTokenSource?.Cancel();
+                _connectionCancellationTokenSource?.CancelAsync();
                 return;
             }
         }
@@ -160,7 +161,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 Mediator.Publish(new NotificationMessage("Multiple Identical Characters detected", "Your Service configuration has multiple characters with the same name and world set up. Delete the duplicates in the character management to be able to connect to Mare.",
                     NotificationType.Error));
                 await StopConnectionAsync(ServerState.MultiChara).ConfigureAwait(false);
-                _connectionCancellationTokenSource?.Cancel();
+                _connectionCancellationTokenSource?.CancelAsync();
                 return;
             }
 
@@ -169,7 +170,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 Logger.LogWarning("No UID/OAuth set for current character");
                 _connectionDto = null;
                 await StopConnectionAsync(ServerState.OAuthMisconfigured).ConfigureAwait(false);
-                _connectionCancellationTokenSource?.Cancel();
+                _connectionCancellationTokenSource?.CancelAsync();
                 return;
             }
 
@@ -178,7 +179,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 Logger.LogWarning("OAuth2 login token could not be updated");
                 _connectionDto = null;
                 await StopConnectionAsync(ServerState.OAuthLoginTokenStale).ConfigureAwait(false);
-                _connectionCancellationTokenSource?.Cancel();
+                _connectionCancellationTokenSource?.CancelAsync();
                 return;
             }
         }
@@ -189,7 +190,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
         Mediator.Publish(new EventMessage(new Services.Events.Event(nameof(ApiController), Services.Events.EventSeverity.Informational,
             $"Starting Connection to {_serverManager.CurrentServer.ServerName}")));
 
-        _connectionCancellationTokenSource?.Cancel();
+        _connectionCancellationTokenSource?.CancelAsync();
         _connectionCancellationTokenSource?.Dispose();
         _connectionCancellationTokenSource = new CancellationTokenSource();
         var token = _connectionCancellationTokenSource.Token;
@@ -624,7 +625,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
                 $"Stopping existing connection to {_serverManager.CurrentServer.ServerName}")));
 
             _initialized = false;
-            _healthCheckTokenSource?.Cancel();
+            _healthCheckTokenSource?.CancelAsync();
             Mediator.Publish(new DisconnectedMessage());
             _mareHub = null;
             _connectionDto = null;

@@ -6,6 +6,7 @@ using MareSynchronos.Utils;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.IO;
 
 namespace MareSynchronos.FileCache;
 

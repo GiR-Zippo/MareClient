@@ -2,6 +2,7 @@
 using MareSynchronos.Utils;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace MareSynchronos.Services.Events;
 

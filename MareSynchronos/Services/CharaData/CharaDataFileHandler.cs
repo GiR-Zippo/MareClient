@@ -11,6 +11,7 @@ using MareSynchronos.Services.CharaData.Models;
 using MareSynchronos.Utils;
 using MareSynchronos.WebAPI.Files;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace MareSynchronos.Services;
 

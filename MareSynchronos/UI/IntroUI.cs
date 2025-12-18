@@ -12,6 +12,7 @@ using MareSynchronos.Services.Mediator;
 using MareSynchronos.Services.ServerConfiguration;
 using MareSynchronos.WebAPI;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Numerics;
 using System.Text.RegularExpressions;
 

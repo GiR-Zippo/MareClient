@@ -7,6 +7,7 @@ using MareSynchronos.Services.Mediator;
 using MareSynchronos.UI;
 using MareSynchronos.WebAPI.Files.Models;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace MareSynchronos.Services;
 

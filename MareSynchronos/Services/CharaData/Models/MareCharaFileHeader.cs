@@ -1,4 +1,6 @@
-﻿namespace MareSynchronos.Services.CharaData.Models;
+﻿using System.IO;
+
+namespace MareSynchronos.Services.CharaData.Models;
 
 public record MareCharaFileHeader(byte Version, MareCharaFileData CharaFileData)
 {

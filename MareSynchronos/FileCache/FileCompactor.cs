@@ -1,6 +1,7 @@
 ﻿using MareSynchronos.MareConfiguration;
 using MareSynchronos.Services;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace MareSynchronos.FileCache;
