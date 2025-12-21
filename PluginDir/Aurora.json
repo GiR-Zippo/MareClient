@@ -2,13 +2,13 @@
   "Author": "SomeoneWeKnow",
   "Name": "Aurora",
   "InternalName": "aurora",
-  "AssemblyVersion": "1.12.3",
+  "AssemblyVersion": "1.114.0",
   "Description": "A useles test plogon.",
   "ApplicableVersion": "any",
   "Tags": [
     "testing"
   ],
-  "DalamudApiLevel": 13,
+  "DalamudApiLevel": 14,
   "LoadRequiredState": 0,
   "LoadSync": false,
   "CanUnloadAsync": false,
