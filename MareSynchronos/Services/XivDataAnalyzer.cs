@@ -8,6 +8,7 @@ using MareSynchronos.Interop.GameModel;
 using MareSynchronos.MareConfiguration;
 using MareSynchronos.PlayerData.Handlers;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace MareSynchronos.Services;

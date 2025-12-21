@@ -4,6 +4,7 @@ using MareSynchronos.WebAPI.Files.Models;
 using MareSynchronos.WebAPI.SignalR;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;

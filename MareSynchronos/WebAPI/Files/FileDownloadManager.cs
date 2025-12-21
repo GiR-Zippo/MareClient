@@ -8,7 +8,9 @@ using MareSynchronos.PlayerData.Handlers;
 using MareSynchronos.Services.Mediator;
 using MareSynchronos.WebAPI.Files.Models;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace MareSynchronos.WebAPI.Files;

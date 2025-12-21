@@ -1,5 +1,6 @@
 using Lumina.Data;
 using Lumina.Extensions;
+using System.IO;
 using System.Text;
 using static Lumina.Data.Parsing.MdlStructs;
 

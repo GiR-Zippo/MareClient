@@ -24,6 +24,7 @@ using MareSynchronos.WebAPI;
 using MareSynchronos.WebAPI.SignalR;
 using Microsoft.Extensions.Logging;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;

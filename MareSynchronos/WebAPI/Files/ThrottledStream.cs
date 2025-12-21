@@ -1,4 +1,6 @@
-﻿namespace MareSynchronos.WebAPI.Files
+﻿using System.IO;
+
+namespace MareSynchronos.WebAPI.Files
 {
     /// <summary>
     ///     Class for streaming data with throttling support.

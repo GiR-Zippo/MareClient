@@ -1,6 +1,7 @@
 ﻿using MareSynchronos.API.Dto.Group;
 using MareSynchronos.WebAPI.SignalR.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.IO;
 
 namespace MareSynchronos.WebAPI;
 

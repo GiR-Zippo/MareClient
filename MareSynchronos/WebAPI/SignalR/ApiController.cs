@@ -14,6 +14,7 @@ using MareSynchronos.WebAPI.SignalR;
 using MareSynchronos.WebAPI.SignalR.Utils;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Reflection;
 
 namespace MareSynchronos.WebAPI;

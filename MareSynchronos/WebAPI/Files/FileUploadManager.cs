@@ -8,6 +8,8 @@ using MareSynchronos.Services.ServerConfiguration;
 using MareSynchronos.UI;
 using MareSynchronos.WebAPI.Files.Models;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 

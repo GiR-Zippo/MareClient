@@ -30,6 +30,8 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using MareSynchronos.Services.CharaData;
 using Dalamud.Game;
+using System.IO;
+using System.Net.Http;
 
 namespace MareSynchronos;
 

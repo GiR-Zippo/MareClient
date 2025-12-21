@@ -12,6 +12,7 @@ using MareSynchronos.WebAPI;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.IO;
 
 namespace MareSynchronos.UI;
 

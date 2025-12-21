@@ -8,6 +8,7 @@ using Penumbra.Api.Enums;
 using Penumbra.Api.Helpers;
 using Penumbra.Api.IpcSubscribers;
 using System.Collections.Concurrent;
+using System.IO;
 
 namespace MareSynchronos.Interop.Ipc;
 
