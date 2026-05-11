@@ -164,6 +164,11 @@ public sealed class FileCompactor
         }
     }
 
+    /// <summary>
+    /// Retrieves the cluster size of the disk where the file is located.
+    /// </summary>
+    /// <param name="fi">FileInfo of the file in question.</param>
+    /// <returns>Cluster size in bytes, or -1 if detection fails.</returns>
     private int GetClusterSize(FileInfo fi)
     {
         if (!fi.Exists) return -1;
@@ -178,6 +183,10 @@ public sealed class FileCompactor
         return _clusterSizes[root];
     }
 
+    /// <summary>
+    /// Checks if a file is already compressed via the XPRESS8K algorithm.
+    /// </summary>
+    /// <param name="filePath">Path to check.</param>
     private static bool IsCompactedFile(string filePath)
     {
         uint buf = 8;
@@ -186,6 +195,10 @@ public sealed class FileCompactor
         return info.Algorithm == CompressionAlgorithm.XPRESS8K;
     }
 
+    /// <summary>
+    /// Internal helper to invoke the Windows WofSetFileDataLocation API for compression.
+    /// </summary>
+    /// <param name="path">The path to the file.</param>
     private void WOFCompressFile(string path)
     {
         var efInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(_efInfo));

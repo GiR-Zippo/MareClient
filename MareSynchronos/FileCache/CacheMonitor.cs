@@ -10,6 +10,10 @@ using System.IO;
 
 namespace MareSynchronos.FileCache;
 
+/// <summary>
+/// Monitors local file systems (Mare Cache and Penumbra) for changes, 
+/// manages the scanning process, and ensures the integrity of the FileCache database.
+/// </summary>
 public sealed class CacheMonitor : DisposableMediatorSubscriberBase
 {
     private readonly MareConfigService _configService;
@@ -23,6 +27,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
     private readonly CancellationTokenSource _periodicCalculationTokenSource = new();
     public static readonly IImmutableList<string> AllowedFileExtensions = [".mdl", ".tex", ".mtrl", ".tmb", ".pap", ".avfx", ".atex", ".sklb", ".eid", ".phyb", ".pbd", ".scd", ".skp", ".shpk"];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CacheMonitor"/> class.
+    /// Sets up mediator subscriptions for Penumbra and Dalamud events and starts the periodic storage calculation task.
+    /// </summary>
     public CacheMonitor(ILogger<CacheMonitor> logger, IpcManager ipcManager, MareConfigService configService,
         FileCacheManager fileDbManager, MareMediator mediator, PerformanceCollectorService performanceCollector, DalamudUtilService dalamudUtil,
         FileCompactor fileCompactor) : base(logger, mediator)
@@ -87,14 +95,45 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         }, token);
     }
 
+    /// <summary>
+    /// Gets the current number of files processed during a scan.
+    /// </summary>
     public long CurrentFileProgress => _currentFileProgress;
+
+    /// <summary>
+    /// Gets or sets the calculated total size of the Mare file cache in bytes.
+    /// </summary>
     public long FileCacheSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the available free space on the drive containing the cache folder.
+    /// </summary>
     public long FileCacheDriveFree { get; set; }
+
+    /// <summary>
+    /// Contains source-specific locks that prevent the monitor from processing file system changes.
+    /// </summary>
     public ConcurrentDictionary<string, int> HaltScanLocks { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Gets a value indicating whether a file scan is currently in progress.
+    /// </summary>
     public bool IsScanRunning => CurrentFileProgress > 0 || TotalFiles > 0;
+
+    /// <summary>
+    /// Gets the total number of files discovered for the current scan.
+    /// </summary>
     public long TotalFiles { get; private set; }
+
+    /// <summary>
+    /// Gets the total number of file cache entities currently stored.
+    /// </summary>
     public long TotalFilesStorage { get; private set; }
 
+    /// <summary>
+    /// Increments a halt lock for a specific source to prevent file processing.
+    /// </summary>
+    /// <param name="source">The name of the service or component requesting the halt.</param>
     public void HaltScan(string source)
     {
         if (!HaltScanLocks.ContainsKey(source)) HaltScanLocks[source] = 0;
@@ -105,6 +144,9 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
     private readonly Dictionary<string, WatcherChange> _watcherChanges = new Dictionary<string, WatcherChange>(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, WatcherChange> _mareChanges = new Dictionary<string, WatcherChange>(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// Disposes the active FileSystemWatchers and stops monitoring.
+    /// </summary>
     public void StopMonitoring()
     {
         Logger.LogInformation("Stopping monitoring of Penumbra and Mare storage folders");
@@ -114,8 +156,15 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         PenumbraWatcher = null;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the storage drive uses the NTFS file system.
+    /// </summary>
     public bool StorageisNTFS { get; private set; } = false;
 
+    /// <summary>
+    /// Initializes and starts the FileSystemWatcher for the Mare cache directory.
+    /// </summary>
+    /// <param name="marePath">The path to the Mare cache folder.</param>
     public void StartMareWatcher(string? marePath)
     {
         MareWatcher?.Dispose();
@@ -149,6 +198,9 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         MareWatcher.EnableRaisingEvents = true;
     }
 
+    /// <summary>
+    /// Callback for Mare FileSystemWatcher events. Filters by extension and triggers processing.
+    /// </summary>
     private void MareWatcher_FileChanged(object sender, FileSystemEventArgs e)
     {
         Logger.LogTrace("Mare FSW: FileChanged: {change} => {path}", e.ChangeType, e.FullPath);
@@ -163,6 +215,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         _ = MareWatcherExecution();
     }
 
+    /// <summary>
+    /// Initializes and starts the FileSystemWatcher for the Penumbra mod directory.
+    /// </summary>
+    /// <param name="penumbraPath">The path to the Penumbra mod folder.</param>
     public void StartPenumbraWatcher(string? penumbraPath)
     {
         PenumbraWatcher?.Dispose();
@@ -194,6 +250,9 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         PenumbraWatcher.EnableRaisingEvents = true;
     }
 
+    /// <summary>
+    /// General handler for in the Penumbra directory file changes (Create, Delete, Change).
+    /// </summary>
     private void Fs_Changed(object sender, FileSystemEventArgs e)
     {
         if (Directory.Exists(e.FullPath)) return;
@@ -212,6 +271,9 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         _ = PenumbraWatcherExecution();
     }
 
+    /// <summary>
+    /// Handles rename events in the Penumbra directory, including recursive directory renames.
+    /// </summary>
     private void Fs_Renamed(object sender, RenamedEventArgs e)
     {
         if (Directory.Exists(e.FullPath))
@@ -252,6 +314,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
     public FileSystemWatcher? PenumbraWatcher { get; private set; }
     public FileSystemWatcher? MareWatcher { get; private set; }
 
+    /// <summary>
+    /// Orchestrates the delayed execution of Mare cache changes. 
+    /// Waits for halt locks to be released before committing changes to the database.
+    /// </summary>
     private async Task MareWatcherExecution()
     {
         _mareFswCts = _mareFswCts.CancelRecreate();
@@ -283,6 +349,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         HandleChanges(changes);
     }
 
+    /// <summary>
+    /// Processes a dictionary of file system changes and updates the FileCacheManager accordingly.
+    /// </summary>
+    /// <param name="changes">A dictionary mapping file paths to their respective change types.</param>
     private void HandleChanges(Dictionary<string, WatcherChange> changes)
     {
         lock (_fileDbManager)
@@ -318,6 +388,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         }
     }
 
+    /// <summary>
+    /// Orchestrates the delayed execution of Penumbra directory changes.
+    /// Uses a debounce timer (10 seconds) and checks for halt locks.
+    /// </summary>
     private async Task PenumbraWatcherExecution()
     {
         _penumbraFswCts = _penumbraFswCts.CancelRecreate();
@@ -349,6 +423,9 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         HandleChanges(changes);
     }
 
+    /// <summary>
+    /// Cancels any existing scan and triggers a new full file system scan in a background thread.
+    /// </summary>
     public void InvokeScan()
     {
         TotalFiles = 0;
@@ -391,6 +468,11 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         }, token);
     }
 
+    /// <summary>
+    /// Calculates total size of the cache folder and performs cleanup of oldest files 
+    /// if the size exceeds the configured maximum.
+    /// </summary>
+    /// <param name="token">Cancellation token for the task.</param>
     public void RecalculateFileCacheSize(CancellationToken token)
     {
         if (string.IsNullOrEmpty(_configService.Current.CacheFolder) || !Directory.Exists(_configService.Current.CacheFolder))
@@ -441,11 +523,18 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         }
     }
 
+    /// <summary>
+    /// Clears all existing halt scan locks.
+    /// </summary>
     public void ResetLocks()
     {
         HaltScanLocks.Clear();
     }
 
+    /// <summary>
+    /// Resumes the file scan.
+    /// </summary>
+    /// <param name="source">The name of the service or component releasing the halt.</param>
     public void ResumeScan(string source)
     {
         if (!HaltScanLocks.ContainsKey(source)) HaltScanLocks[source] = 0;
@@ -454,6 +543,10 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         if (HaltScanLocks[source] < 0) HaltScanLocks[source] = 0;
     }
 
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// Disposes of watchers and cancels pending tokens.
+    /// </summary>
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
@@ -465,6 +558,11 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
         _periodicCalculationTokenSource?.CancelDispose();
     }
 
+    /// <summary>
+    /// Internal logic for the full file scan. Enumerates directories, validates database 
+    /// entries against existing files, and adds new files to the database.
+    /// </summary>
+    /// <param name="ct">Cancellation token to stop the scan.</param>
     private void FullFileScan(CancellationToken ct)
     {
         TotalFiles = 1;
