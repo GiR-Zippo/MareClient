@@ -290,10 +290,10 @@ public partial class ApiController
         _mareHub!.On(nameof(Client_UpdateSystemInfo), act);
     }
 
-    public void OnUpdateUserIndividualPairStatusDto(Action<UserIndividualPairStatusDto> action)
+    public void OnUpdateUserIndividualPairStatusDto(Action<UserIndividualPairStatusDto> act)
     {
         if (_initialized) return;
-        _mareHub!.On(nameof(Client_UpdateUserIndividualPairStatusDto), action);
+        _mareHub!.On(nameof(Client_UpdateUserIndividualPairStatusDto), act);
     }
 
     public void OnUserAddClientPair(Action<UserPairDto> act)

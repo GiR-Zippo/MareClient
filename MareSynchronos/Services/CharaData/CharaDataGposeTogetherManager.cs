@@ -220,7 +220,7 @@ public class CharaDataGposeTogetherManager : DisposableMediatorSubscriberBase
         _usersInLobby.Clear();
     }
 
-    private string CreateJsonFromPoseData(PoseData? poseData)
+    private static string CreateJsonFromPoseData(PoseData? poseData)
     {
         if (poseData == null) return "{}";
 
