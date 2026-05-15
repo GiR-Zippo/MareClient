@@ -114,9 +114,9 @@ public static class VariousExtensions
                                 .OrderBy(g => string.IsNullOrEmpty(g.Hash) ? g.FileSwapPath : g.Hash, StringComparer.OrdinalIgnoreCase).ToList();
                             var newTail = newFileReplacements.Where(g => g.GamePaths.Any(p => p.Contains("/tail/", StringComparison.OrdinalIgnoreCase)))
                                 .OrderBy(g => string.IsNullOrEmpty(g.Hash) ? g.FileSwapPath : g.Hash, StringComparer.OrdinalIgnoreCase).ToList();
-                            var existingTransients = existingFileReplacements.Where(g => g.GamePaths.Any(g => !g.EndsWith("mdl") && !g.EndsWith("tex") && !g.EndsWith("mtrl")))
+                            var existingTransients = existingFileReplacements.Where(g => g.GamePaths.Any(g => !g.EndsWith("mdl", StringComparison.OrdinalIgnoreCase) && !g.EndsWith("tex", StringComparison.OrdinalIgnoreCase) && !g.EndsWith("mtrl", StringComparison.OrdinalIgnoreCase)))
                                 .OrderBy(g => string.IsNullOrEmpty(g.Hash) ? g.FileSwapPath : g.Hash, StringComparer.OrdinalIgnoreCase).ToList();
-                            var newTransients = newFileReplacements.Where(g => g.GamePaths.Any(g => !g.EndsWith("mdl") && !g.EndsWith("tex") && !g.EndsWith("mtrl")))
+                            var newTransients = newFileReplacements.Where(g => g.GamePaths.Any(g => !g.EndsWith("mdl", StringComparison.OrdinalIgnoreCase) && !g.EndsWith("tex", StringComparison.OrdinalIgnoreCase) && !g.EndsWith("mtrl", StringComparison.OrdinalIgnoreCase)))
                                 .OrderBy(g => string.IsNullOrEmpty(g.Hash) ? g.FileSwapPath : g.Hash, StringComparer.OrdinalIgnoreCase).ToList();
 
                             logger.LogTrace("[BASE-{appbase}] ExistingFace: {of}, NewFace: {fc}; ExistingHair: {eh}, NewHair: {nh}; ExistingTail: {et}, NewTail: {nt}; ExistingTransient: {etr}, NewTransient: {ntr}", applicationBase,
@@ -125,11 +125,11 @@ public static class VariousExtensions
                             var differentFace = !existingFace.SequenceEqual(newFace, PlayerData.Data.FileReplacementDataComparer.Instance);
                             var differentHair = !existingHair.SequenceEqual(newHair, PlayerData.Data.FileReplacementDataComparer.Instance);
                             var differentTail = !existingTail.SequenceEqual(newTail, PlayerData.Data.FileReplacementDataComparer.Instance);
-                            var differenTransients = !existingTransients.SequenceEqual(newTransients, PlayerData.Data.FileReplacementDataComparer.Instance);
-                            if (differentFace || differentHair || differentTail || differenTransients)
+                            var differentTransients = !existingTransients.SequenceEqual(newTransients, PlayerData.Data.FileReplacementDataComparer.Instance);
+                            if (differentFace || differentHair || differentTail || differentTransients)
                             {
                                 logger.LogDebug("[BASE-{appbase}] Different Subparts: Face: {face}, Hair: {hair}, Tail: {tail}, Transients: {transients} => {change}", applicationBase,
-                                    differentFace, differentHair, differentTail, differenTransients, PlayerChanges.ForcedRedraw);
+                                    differentFace, differentHair, differentTail, differentTransients, PlayerChanges.ForcedRedraw);
                                 charaDataToUpdate[objectKind].Add(PlayerChanges.ForcedRedraw);
                             }
                         }
