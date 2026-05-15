@@ -22,7 +22,7 @@ public sealed class FileCacheManager : IHostedService
     private readonly string _csvPath;
     private readonly ConcurrentDictionary<string, List<FileCacheEntity>> _fileCaches = new(StringComparer.Ordinal);
     private readonly SemaphoreSlim _getCachesByPathsSemaphore = new(1, 1);
-    private readonly object _fileWriteLock = new();
+    private readonly Lock _fileWriteLock = new();
     private readonly IpcManager _ipcManager;
     private readonly ILogger<FileCacheManager> _logger;
     public string CacheFolder => _configService.Current.CacheFolder;

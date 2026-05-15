@@ -638,7 +638,7 @@ public sealed class CacheMonitor : DisposableMediatorSubscriberBase
 
         List<FileCacheEntity> entitiesToRemove = [];
         List<FileCacheEntity> entitiesToUpdate = [];
-        object sync = new();
+        Lock sync = new();
         Thread[] workerThreads = new Thread[threadCount];
 
         ConcurrentQueue<FileCacheEntity> fileCaches = new(_fileDbManager.GetAllFileCaches());

@@ -9,7 +9,7 @@ namespace MareSynchronos.Services.Mediator;
 
 public sealed class MareMediator : IHostedService
 {
-    private readonly object _addRemoveLock = new();
+    private readonly Lock _addRemoveLock = new();
     private readonly ConcurrentDictionary<object, DateTime> _lastErrorTime = [];
     private readonly ILogger<MareMediator> _logger;
     private readonly CancellationTokenSource _loopCts = new();
