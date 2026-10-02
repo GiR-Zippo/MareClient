@@ -63,7 +63,7 @@ public class PopupHandler : WindowMediatorSubscriberBase
         }
 
         var viewportSize = ImGui.GetWindowViewport().Size;
-        ImGui.SetNextWindowSize(_currentHandler!.PopupSize * ImGuiHelpers.GlobalScale);
+        ImGui.SetNextWindowSize(_currentHandler.PopupSize * ImGuiHelpers.GlobalScale);
         ImGui.SetNextWindowPos(viewportSize / 2, ImGuiCond.Always, new Vector2(0.5f));
         using var popup = ImRaii.Popup(WindowName, ImGuiWindowFlags.Modal);
         if (!popup) return;

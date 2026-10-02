@@ -214,7 +214,7 @@ public sealed partial class CharaDataManager : DisposableMediatorSubscriberBase
     {
         return UiBlockingComputation = Task.Run(async () =>
         {
-            var apply = await CanApplyInGpose().ConfigureAwait(false);
+            await CanApplyInGpose().ConfigureAwait(false);
             if (pose.WorldData == default || !(await CanApplyInGpose().ConfigureAwait(false)).CanApply) return;
             var gposeChara = await _dalamudUtilService.GetGposeCharacterFromObjectTableByNameAsync(targetName, true).ConfigureAwait(false);
             if (gposeChara == null) return;
@@ -665,7 +665,7 @@ public sealed partial class CharaDataManager : DisposableMediatorSubscriberBase
             return ("Restored successfully", true);
         }
 
-        var missingFileList = extendedDto!.MissingFiles.ToList();
+        var missingFileList = extendedDto.MissingFiles.ToList();
         var result = await UploadFiles(missingFileList, async () =>
         {
             var newFilePaths = dto.FileGamePaths;

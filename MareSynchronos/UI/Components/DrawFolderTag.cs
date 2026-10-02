@@ -135,7 +135,7 @@ public class DrawFolderTag : DrawFolderBase
     {
         if (!RenderPause) return currentRightSideX;
 
-        var allArePaused = _allPairs.All(pair => pair.UserPair!.OwnPermissions.IsPaused());
+        var allArePaused = _allPairs.All(pair => pair.UserPair.OwnPermissions.IsPaused());
         var pauseButton = allArePaused ? FontAwesomeIcon.Play : FontAwesomeIcon.Pause;
         var pauseButtonX = _uiSharedService.GetIconButtonSize(pauseButton).X;
 

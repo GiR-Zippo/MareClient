@@ -547,7 +547,7 @@ public sealed class PairHandler : DisposableMediatorSubscriberBase
 
                 _ = Task.Run(() =>
                 {
-                    ApplyCharacterData(appData, _cachedData!, forceApplyCustomization: true);
+                    ApplyCharacterData(appData, _cachedData, forceApplyCustomization: true);
                 });
             }
             else

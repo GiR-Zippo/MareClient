@@ -512,9 +512,9 @@ internal sealed partial class CharaDataHubUi : WindowMediatorSubscriberBase
                             if (metaInfo != null)
                             {
                                 UiSharedService.AttachToolTip("Metainfo present" + UiSharedService.TooltipSeparator
-                                    + $"Last Updated: {metaInfo!.UpdatedDate}" + Environment.NewLine
-                                    + $"Description: {metaInfo!.Description}" + Environment.NewLine
-                                    + $"Poses: {metaInfo!.PoseData.Count}");
+                                    + $"Last Updated: {metaInfo.UpdatedDate}" + Environment.NewLine
+                                    + $"Description: {metaInfo.Description}" + Environment.NewLine
+                                    + $"Poses: {metaInfo.PoseData.Count}");
                             }
                             else
                             {

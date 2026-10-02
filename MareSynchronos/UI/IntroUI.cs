@@ -136,11 +136,11 @@ public partial class IntroUi : WindowMediatorSubscriberBase
             ImGui.Separator();
 
             UiSharedService.TextWrapped(_tosParagraphs![0]);
-            UiSharedService.TextWrapped(_tosParagraphs![1]);
-            UiSharedService.TextWrapped(_tosParagraphs![2]);
-            UiSharedService.TextWrapped(_tosParagraphs![3]);
-            UiSharedService.TextWrapped(_tosParagraphs![4]);
-            UiSharedService.TextWrapped(_tosParagraphs![5]);
+            UiSharedService.TextWrapped(_tosParagraphs[1]);
+            UiSharedService.TextWrapped(_tosParagraphs[2]);
+            UiSharedService.TextWrapped(_tosParagraphs[3]);
+            UiSharedService.TextWrapped(_tosParagraphs[4]);
+            UiSharedService.TextWrapped(_tosParagraphs[5]);
 
             ImGui.Separator();
             if (_timeoutTask?.IsCompleted ?? true)
@@ -294,7 +294,7 @@ public partial class IntroUi : WindowMediatorSubscriberBase
                     if (_serverConfigurationManager.CurrentServer == null) _serverConfigurationManager.SelectServer(0);
                     if (!_serverConfigurationManager.CurrentServer!.SecretKeys.Any())
                     {
-                        _serverConfigurationManager.CurrentServer!.SecretKeys.Add(_serverConfigurationManager.CurrentServer.SecretKeys.Select(k => k.Key).LastOrDefault() + 1, new SecretKey()
+                        _serverConfigurationManager.CurrentServer.SecretKeys.Add(_serverConfigurationManager.CurrentServer.SecretKeys.Select(k => k.Key).LastOrDefault() + 1, new SecretKey()
                         {
                             FriendlyName = $"Secret Key added on Setup ({DateTime.Now:yyyy-MM-dd})",
                             Key = _secretKey,
@@ -303,7 +303,7 @@ public partial class IntroUi : WindowMediatorSubscriberBase
                     }
                     else
                     {
-                        _serverConfigurationManager.CurrentServer!.SecretKeys[0] = new SecretKey()
+                        _serverConfigurationManager.CurrentServer.SecretKeys[0] = new SecretKey()
                         {
                             FriendlyName = $"Secret Key added on Setup ({DateTime.Now:yyyy-MM-dd})",
                             Key = _secretKey,
@@ -391,7 +391,7 @@ public partial class IntroUi : WindowMediatorSubscriberBase
                     if (_serverConfigurationManager.CurrentServer == null) _serverConfigurationManager.SelectServer(0);
                     if (!_serverConfigurationManager.CurrentServer!.SecretKeys.Any())
                     {
-                        _serverConfigurationManager.CurrentServer!.SecretKeys.Add(_serverConfigurationManager.CurrentServer.SecretKeys.Select(k => k.Key).LastOrDefault() + 1, new SecretKey()
+                        _serverConfigurationManager.CurrentServer.SecretKeys.Add(_serverConfigurationManager.CurrentServer.SecretKeys.Select(k => k.Key).LastOrDefault() + 1, new SecretKey()
                         {
                             FriendlyName = $"Secret Key added on Setup ({DateTime.Now:yyyy-MM-dd})",
                             Key = _secretKey,
@@ -400,7 +400,7 @@ public partial class IntroUi : WindowMediatorSubscriberBase
                     }
                     else
                     {
-                        _serverConfigurationManager.CurrentServer!.SecretKeys[0] = new SecretKey()
+                        _serverConfigurationManager.CurrentServer.SecretKeys[0] = new SecretKey()
                         {
                             FriendlyName = $"Secret Key added on Setup ({DateTime.Now:yyyy-MM-dd})",
                             Key = _secretKey,

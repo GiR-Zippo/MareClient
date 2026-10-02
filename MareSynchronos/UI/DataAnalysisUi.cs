@@ -493,7 +493,7 @@ public class DataAnalysisUi : WindowMediatorSubscriberBase
         }
         else
         {
-            if (_cachedAnalysis!.Any(c => c.Value.Any(f => !f.Value.IsComputed)))
+            if (_cachedAnalysis.Any(c => c.Value.Any(f => !f.Value.IsComputed)))
             {
                 UiSharedService.ColorTextWrapped("Some entries in the analysis have file size not determined yet, press the button below to analyze your current data",
                     ImGuiColors.DalamudYellow);
@@ -515,7 +515,7 @@ public class DataAnalysisUi : WindowMediatorSubscriberBase
 
         ImGui.TextUnformatted("Total files:");
         ImGui.SameLine();
-        ImGui.TextUnformatted(_cachedAnalysis!.Values.Sum(c => c.Values.Count).ToString());
+        ImGui.TextUnformatted(_cachedAnalysis.Values.Sum(c => c.Values.Count).ToString());
         ImGui.SameLine();
         using (var font = ImRaii.PushFont(UiBuilder.IconFont))
         {
@@ -532,10 +532,10 @@ public class DataAnalysisUi : WindowMediatorSubscriberBase
         }
         ImGui.TextUnformatted("Total size (actual):");
         ImGui.SameLine();
-        ImGui.TextUnformatted(UiSharedService.ByteToString(_cachedAnalysis!.Sum(c => c.Value.Sum(c => c.Value.OriginalSize))));
+        ImGui.TextUnformatted(UiSharedService.ByteToString(_cachedAnalysis.Sum(c => c.Value.Sum(c => c.Value.OriginalSize))));
         ImGui.TextUnformatted("Total size (compressed for up/download only):");
         ImGui.SameLine();
-        ImGui.TextUnformatted(UiSharedService.ByteToString(_cachedAnalysis!.Sum(c => c.Value.Sum(c => c.Value.CompressedSize))));
+        ImGui.TextUnformatted(UiSharedService.ByteToString(_cachedAnalysis.Sum(c => c.Value.Sum(c => c.Value.CompressedSize))));
         ImGui.TextUnformatted($"Total modded model triangles: {_cachedAnalysis.Sum(c => c.Value.Sum(f => f.Value.Triangles))}");
         ImGui.Separator();
         using var tabbar = ImRaii.TabBar("objectSelection");

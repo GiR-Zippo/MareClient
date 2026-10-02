@@ -56,7 +56,7 @@ public class DrawUserPair
     }
 
     public Pair Pair => _pair;
-    public UserFullPairDto UserPair => _pair.UserPair!;
+    public UserFullPairDto UserPair => _pair.UserPair;
 
     public void DrawPairedClient()
     {
@@ -110,7 +110,7 @@ public class DrawUserPair
         }
         UiSharedService.AttachToolTip("Opens the Permissions Window which allows you to manage multiple permissions at once.");
 
-        var isSticky = _pair.UserPair!.OwnPermissions.IsSticky();
+        var isSticky = _pair.UserPair.OwnPermissions.IsSticky();
         string stickyText = isSticky ? "Disable Preferred Permissions" : "Enable Preferred Permissions";
         var stickyIcon = isSticky ? FontAwesomeIcon.ArrowCircleDown : FontAwesomeIcon.ArrowCircleUp;
         if (_uiSharedService.IconTextButton(stickyIcon, stickyText, _menuWidth, true))
@@ -126,7 +126,7 @@ public class DrawUserPair
             + Environment.NewLine + "in the permission settings.";
         bool individual = !_pair.IsDirectlyPaired && _apiController.DefaultPermissions!.IndividualIsSticky;
 
-        var isDisableSounds = _pair.UserPair!.OwnPermissions.IsDisableSounds();
+        var isDisableSounds = _pair.UserPair.OwnPermissions.IsDisableSounds();
         string disableSoundsText = isDisableSounds ? "Enable sound sync" : "Disable sound sync";
         var disableSoundsIcon = isDisableSounds ? FontAwesomeIcon.VolumeUp : FontAwesomeIcon.VolumeMute;
         if (_uiSharedService.IconTextButton(disableSoundsIcon, disableSoundsText, _menuWidth, true))
@@ -137,7 +137,7 @@ public class DrawUserPair
         }
         UiSharedService.AttachToolTip("Changes sound sync permissions with this user." + (individual ? individualText : string.Empty));
 
-        var isDisableAnims = _pair.UserPair!.OwnPermissions.IsDisableAnimations();
+        var isDisableAnims = _pair.UserPair.OwnPermissions.IsDisableAnimations();
         string disableAnimsText = isDisableAnims ? "Enable animation sync" : "Disable animation sync";
         var disableAnimsIcon = isDisableAnims ? FontAwesomeIcon.Running : FontAwesomeIcon.Stop;
         if (_uiSharedService.IconTextButton(disableAnimsIcon, disableAnimsText, _menuWidth, true))
@@ -148,7 +148,7 @@ public class DrawUserPair
         }
         UiSharedService.AttachToolTip("Changes animation sync permissions with this user." + (individual ? individualText : string.Empty));
 
-        var isDisableVFX = _pair.UserPair!.OwnPermissions.IsDisableVFX();
+        var isDisableVFX = _pair.UserPair.OwnPermissions.IsDisableVFX();
         string disableVFXText = isDisableVFX ? "Enable VFX sync" : "Disable VFX sync";
         var disableVFXIcon = isDisableVFX ? FontAwesomeIcon.Sun : FontAwesomeIcon.Circle;
         if (_uiSharedService.IconTextButton(disableVFXIcon, disableVFXText, _menuWidth, true))
@@ -329,7 +329,7 @@ public class DrawUserPair
 
     private float DrawRightSide()
     {
-        var pauseIcon = _pair.UserPair!.OwnPermissions.IsPaused() ? FontAwesomeIcon.Play : FontAwesomeIcon.Pause;
+        var pauseIcon = _pair.UserPair.OwnPermissions.IsPaused() ? FontAwesomeIcon.Play : FontAwesomeIcon.Pause;
         var pauseButtonSize = _uiSharedService.GetIconButtonSize(pauseIcon);
         var barButtonSize = _uiSharedService.GetIconButtonSize(FontAwesomeIcon.EllipsisV);
         var spacingX = ImGui.GetStyle().ItemSpacing.X;
@@ -347,7 +347,7 @@ public class DrawUserPair
         ImGui.SameLine(currentRightSide);
         if (_uiSharedService.IconButton(pauseIcon))
         {
-            var perm = _pair.UserPair!.OwnPermissions;
+            var perm = _pair.UserPair.OwnPermissions;
 
             if (UiSharedService.CtrlPressed() && !perm.IsPaused())
             {
@@ -356,9 +356,9 @@ public class DrawUserPair
             perm.SetPaused(!perm.IsPaused());
             _ = _apiController.UserSetPairPermissions(new(_pair.UserData, perm));
         }
-        UiSharedService.AttachToolTip(!_pair.UserPair!.OwnPermissions.IsPaused()
+        UiSharedService.AttachToolTip(!_pair.UserPair.OwnPermissions.IsPaused()
             ? ("Pause pairing with " + _pair.UserData.AliasOrUID
-                + (_pair.UserPair!.OwnPermissions.IsSticky()
+                + (_pair.UserPair.OwnPermissions.IsSticky()
                     ? string.Empty
                     : UiSharedService.TooltipSeparator + "Hold CTRL to enable preferred permissions while pausing." + Environment.NewLine + "This will leave this pair paused even if unpausing syncshells including this pair."))
             : "Resume pairing with " + _pair.UserData.AliasOrUID);
@@ -406,11 +406,11 @@ public class DrawUserPair
                         ImGui.SameLine(40 * ImGuiHelpers.GlobalScale);
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("You");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OwnPermissions.IsDisableSounds());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OwnPermissions.IsDisableSounds());
                         ImGui.SameLine();
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("They");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OtherPermissions.IsDisableSounds());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OtherPermissions.IsDisableSounds());
                     }
 
                     if (individualAnimDisabled)
@@ -424,11 +424,11 @@ public class DrawUserPair
                         ImGui.SameLine(40 * ImGuiHelpers.GlobalScale);
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("You");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OwnPermissions.IsDisableAnimations());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OwnPermissions.IsDisableAnimations());
                         ImGui.SameLine();
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("They");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OtherPermissions.IsDisableAnimations());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OtherPermissions.IsDisableAnimations());
                     }
 
                     if (individualVFXDisabled)
@@ -442,11 +442,11 @@ public class DrawUserPair
                         ImGui.SameLine(40 * ImGuiHelpers.GlobalScale);
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("You");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OwnPermissions.IsDisableVFX());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OwnPermissions.IsDisableVFX());
                         ImGui.SameLine();
                         ImGui.AlignTextToFramePadding();
                         ImGui.TextUnformatted("They");
-                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair!.OtherPermissions.IsDisableVFX());
+                        _uiSharedService.BooleanToColoredIcon(!_pair.UserPair.OtherPermissions.IsDisableVFX());
                     }
 
                     ImGui.EndTooltip();

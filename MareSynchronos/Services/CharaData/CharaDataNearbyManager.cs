@@ -93,7 +93,7 @@ public sealed class CharaDataNearbyManager : DisposableMediatorSubscriberBase
             return;
         }
 
-        if (hoveredPose != _hoveredVfx!.Value.Pose)
+        if (hoveredPose != _hoveredVfx.Value.Pose)
         {
             _vfxSpawnManager.DespawnObject(_hoveredVfx.Value.VfxId);
             var vfxGuid = _vfxSpawnManager.SpawnObject(hoveredPose.Position, hoveredPose.Rotation, Vector3.One * 4, 1, 0.2f, 0.2f, 1f);
@@ -260,7 +260,7 @@ public sealed class CharaDataNearbyManager : DisposableMediatorSubscriberBase
         Vector3 cameraPos = new(camera->Position.X, camera->Position.Y, camera->Position.Z);
         Vector3 lookAt = new(camera->LookAtVector.X, camera->LookAtVector.Y, camera->LookAtVector.Z);
 
-        if (_filterEntriesRunningTask?.IsCompleted ?? true && _dalamudUtilService.IsLoggedIn)
+        if ((_filterEntriesRunningTask == null || _filterEntriesRunningTask.IsCompleted) && _dalamudUtilService.IsLoggedIn)
             _filterEntriesRunningTask = FilterEntriesAsync(cameraPos, lookAt);
     }
 

@@ -72,10 +72,10 @@ public class CreateSyncshellUI : WindowMediatorSubscriberBase
             _uiSharedService.BooleanToColoredIcon(!_apiController.DefaultPermissions!.DisableGroupAnimations);
             ImGui.AlignTextToFramePadding();
             ImGui.TextUnformatted("- Sounds");
-            _uiSharedService.BooleanToColoredIcon(!_apiController.DefaultPermissions!.DisableGroupSounds);
+            _uiSharedService.BooleanToColoredIcon(!_apiController.DefaultPermissions.DisableGroupSounds);
             ImGui.AlignTextToFramePadding();
             ImGui.TextUnformatted("- VFX");
-            _uiSharedService.BooleanToColoredIcon(!_apiController.DefaultPermissions!.DisableGroupVFX);
+            _uiSharedService.BooleanToColoredIcon(!_apiController.DefaultPermissions.DisableGroupVFX);
             UiSharedService.TextWrapped("(Those preferred permissions can be changed anytime after Syncshell creation, your defaults can be changed anytime in the Mare Settings)");
         }
         else

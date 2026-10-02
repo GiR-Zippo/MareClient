@@ -83,7 +83,7 @@ public abstract class ConfigurationServiceBase<T> : IConfigService<T> where T : 
         }
 
         _configLastWriteTime = GetConfigLastWriteTime();
-        return config;
+        return config!;
     }
 
     private T? AttemptToLoadBackup()

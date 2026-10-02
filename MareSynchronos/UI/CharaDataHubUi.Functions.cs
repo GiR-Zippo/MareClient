@@ -13,14 +13,16 @@ internal sealed partial class CharaDataHubUi
 		AccessTypeDto.AllPairs => "All Pairs",
 		AccessTypeDto.ClosePairs => "Direct Pairs",
 		AccessTypeDto.Individuals => "Specified",
-		AccessTypeDto.Public => "Everyone"
-	};
+		AccessTypeDto.Public => "Everyone",
+        _ => dto.ToString()
+    };
 
 	private static string GetShareTypeString(ShareTypeDto dto) => dto switch
 	{
 		ShareTypeDto.Private => "Code Only",
-		ShareTypeDto.Shared => "Shared"
-	};
+		ShareTypeDto.Shared => "Shared",
+        _ => dto.ToString()
+    };
 
 	private static string GetWorldDataTooltipText(PoseEntryExtended poseEntry)
 	{
@@ -156,11 +158,11 @@ internal sealed partial class CharaDataHubUi
 						|| uid.Contains(_filterCodeNote, StringComparison.OrdinalIgnoreCase)))
 					&& (string.IsNullOrEmpty(_filterDescription)
 						|| (favorite.Value.CustomDescription.Contains(_filterDescription, StringComparison.OrdinalIgnoreCase)
-						|| (metaInfo != null && metaInfo!.Description.Contains(_filterDescription, StringComparison.OrdinalIgnoreCase))))
+						|| (metaInfo != null && metaInfo.Description.Contains(_filterDescription, StringComparison.OrdinalIgnoreCase))))
 					&& (!_filterPoseOnly
-						|| (metaInfo != null && metaInfo!.HasPoses))
+						|| (metaInfo != null && metaInfo.HasPoses))
 					&& (!_filterWorldOnly
-						|| (metaInfo != null && metaInfo!.HasWorldData));
+						|| (metaInfo != null && metaInfo.HasWorldData));
 				if (addFavorite)
 				{
 					newFiltered[favorite.Key] = (favorite.Value, metaInfo, hasMetaInfo);

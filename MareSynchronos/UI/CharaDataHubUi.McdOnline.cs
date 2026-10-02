@@ -236,7 +236,7 @@ internal sealed partial class CharaDataHubUi
             ImGui.TextUnformatted($"{dataDto.FileGamePaths.Count} associated game paths");
             ImGui.NewLine();
             ImGui.SameLine(pos);
-            ImGui.TextUnformatted($"{dataDto.FileSwaps!.Count} file swaps");
+            ImGui.TextUnformatted($"{dataDto.FileSwaps.Count} file swaps");
             ImGui.NewLine();
             ImGui.SameLine(pos);
             if (!dataDto.HasMissingFiles)
@@ -463,7 +463,7 @@ internal sealed partial class CharaDataHubUi
             else
             {
                 var desc = pose.Description;
-                if (ImGui.InputTextWithHint("##description", "Description", ref desc, 100))
+                if (ImGui.InputTextWithHint("##description", "Description", ref desc!, 100))
                 {
                     pose.Description = desc;
                     updateDto.UpdatePoseList();
@@ -519,7 +519,7 @@ internal sealed partial class CharaDataHubUi
                 UiSharedService.AttachToolTip(tooltipText);
                 if (hasWorldData && ImGui.IsItemClicked(ImGuiMouseButton.Left))
                 {
-                    _dalamudUtilService.SetMarkerAndOpenMap(position: new Vector3(worldData.Value.PositionX, worldData.Value.PositionY, worldData.Value.PositionZ),
+                    _dalamudUtilService.SetMarkerAndOpenMap(position: new Vector3(worldData!.Value.PositionX, worldData.Value.PositionY, worldData.Value.PositionZ),
                         _dalamudUtilService.MapData.Value[worldData.Value.LocationInfo.MapId].Map);
                 }
                 ImGui.SameLine();

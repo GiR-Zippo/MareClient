@@ -465,7 +465,7 @@ public class CharaDataGposeTogetherManager : DisposableMediatorSubscriberBase
                 {
                     if (!entry.Value.HasWorldDataUpdate || _dalamudUtil.IsInGpose || entry.Value.WorldData == null) continue;
 
-                    var entryWorldData = entry.Value.WorldData!.Value;
+                    var entryWorldData = entry.Value.WorldData.Value;
 
                     if (worldData.LocationInfo.MapId == entryWorldData.LocationInfo.MapId && worldData.LocationInfo.DivisionId == entryWorldData.LocationInfo.DivisionId
                         && (worldData.LocationInfo.HouseId != entryWorldData.LocationInfo.HouseId
@@ -622,7 +622,7 @@ public class CharaDataGposeTogetherManager : DisposableMediatorSubscriberBase
 
         try
         {
-            await _charaDataManager.ApplyCharaData(userData.CharaData!, userData.AssociatedCharaName).ConfigureAwait(false);
+            await _charaDataManager.ApplyCharaData(userData.CharaData, userData.AssociatedCharaName).ConfigureAwait(false);
             userData.LastAppliedCharaDataDate = userData.CharaData.UpdatedDate;
             userData.HasPoseDataUpdate = true;
             userData.HasWorldDataUpdate = true;

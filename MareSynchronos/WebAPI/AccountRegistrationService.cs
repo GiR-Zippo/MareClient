@@ -38,7 +38,7 @@ public sealed class AccountRegistrationService : IDisposable
             }
         );
         var ver = Assembly.GetExecutingAssembly().GetName().Version;
-        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver!.Minor + "." + ver!.Build));
+        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver.Minor + "." + ver.Build));
     }
 
     public void Dispose()

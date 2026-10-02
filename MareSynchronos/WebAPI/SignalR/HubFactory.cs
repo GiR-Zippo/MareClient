@@ -143,7 +143,7 @@ public class HubFactory : MediatorSubscriberBase
                 );
 
                 var ver = Assembly.GetExecutingAssembly().GetName().Version;
-                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver!.Minor + "." + ver!.Build));
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver.Minor + "." + ver.Build));
 
                 var response = await httpClient.GetAsync(wellKnownUrl).ConfigureAwait(false);
 

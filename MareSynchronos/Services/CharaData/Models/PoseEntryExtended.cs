@@ -15,8 +15,8 @@ public sealed record PoseEntryExtended : PoseEntry
         HasWorldData = (WorldData ?? default) != default;
         if (HasWorldData)
         {
-            Position = new(basePose.WorldData!.Value.PositionX, basePose.WorldData!.Value.PositionY, basePose.WorldData!.Value.PositionZ);
-            Rotation = new(basePose.WorldData!.Value.RotationX, basePose.WorldData!.Value.RotationY, basePose.WorldData!.Value.RotationZ, basePose.WorldData!.Value.RotationW);
+            Position = new(basePose.WorldData!.Value.PositionX, basePose.WorldData.Value.PositionY, basePose.WorldData.Value.PositionZ);
+            Rotation = new(basePose.WorldData.Value.RotationX, basePose.WorldData.Value.RotationY, basePose.WorldData.Value.RotationZ, basePose.WorldData.Value.RotationW);
         }
         MetaInfo = parent;
     }

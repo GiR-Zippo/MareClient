@@ -198,7 +198,7 @@ public class IdDisplayHandler
             groupText = group.GroupAliasOrGID;
         }
 
-        return (textIsGid, groupText!);
+        return (textIsGid, groupText);
     }
 
     public (bool isUid, string text) GetPlayerText(Pair pair)

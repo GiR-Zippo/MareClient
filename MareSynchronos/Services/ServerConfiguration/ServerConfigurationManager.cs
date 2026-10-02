@@ -209,7 +209,7 @@ public class ServerConfigurationManager
         {
             _configService.Current.CurrentServer = 0;
             EnsureMainExists();
-            return CurrentServer!;
+            return CurrentServer;
         }
     }
 
@@ -220,7 +220,7 @@ public class ServerConfigurationManager
         try
         {
             var token = handler.ReadJwtToken(server.OAuthToken);
-            return token.Claims.First(f => string.Equals(f.Type, "discord_user", StringComparison.Ordinal)).Value!;
+            return token.Claims.First(f => string.Equals(f.Type, "discord_user", StringComparison.Ordinal)).Value;
         }
         catch (Exception ex)
         {
@@ -251,7 +251,7 @@ public class ServerConfigurationManager
     public void SelectServer(int idx)
     {
         _configService.Current.CurrentServer = idx;
-        CurrentServer!.FullPause = false;
+        CurrentServer.FullPause = false;
         Save();
     }
 

@@ -171,7 +171,7 @@ public sealed class Plugin : IDalamudPlugin
             {
                 var httpClient = new HttpClient();
                 var ver = Assembly.GetExecutingAssembly().GetName().Version;
-                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver!.Minor + "." + ver!.Build));
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MareSynchronos", ver!.Major + "." + ver.Minor + "." + ver.Build));
                 return httpClient;
             });
             collection.AddSingleton((s) => new MareConfigService(pluginInterface.ConfigDirectory.FullName));

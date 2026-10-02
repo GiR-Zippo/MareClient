@@ -1,11 +1,11 @@
 ﻿using Dalamud.Plugin;
+using Luna;
 using MareSynchronos.MareConfiguration.Models;
 using MareSynchronos.PlayerData.Handlers;
 using MareSynchronos.Services;
 using MareSynchronos.Services.Mediator;
 using Microsoft.Extensions.Logging;
 using Penumbra.Api.Enums;
-using Penumbra.Api.Helpers;
 using Penumbra.Api.IpcSubscribers;
 using System.Collections.Concurrent;
 using System.IO;
@@ -141,7 +141,7 @@ public sealed class IpcCallerPenumbra : DisposableMediatorSubscriberBase, IIpcCa
         }
         else
         {
-            ModDirectory = _penumbraResolveModDir!.Invoke().ToLowerInvariant();
+            ModDirectory = _penumbraResolveModDir.Invoke().ToLowerInvariant();
         }
     }
 
@@ -253,7 +253,7 @@ public sealed class IpcCallerPenumbra : DisposableMediatorSubscriberBase, IIpcCa
             await _redrawManager.PenumbraRedrawInternalAsync(logger, handler, applicationId, (chara) =>
             {
                 logger.LogDebug("[{appid}] Calling on IPC: PenumbraRedraw", applicationId);
-                _penumbraRedraw!.Invoke(chara.ObjectIndex, setting: RedrawType.Redraw);
+                _penumbraRedraw.Invoke(chara.ObjectIndex, setting: RedrawType.Redraw);
 
             }, token).ConfigureAwait(false);
         }
@@ -340,6 +340,6 @@ public sealed class IpcCallerPenumbra : DisposableMediatorSubscriberBase, IIpcCa
         APIAvailable = true;
         ModDirectory = _penumbraResolveModDir.Invoke();
         _mareMediator.Publish(new PenumbraInitializedMessage());
-        _penumbraRedraw!.Invoke(0, setting: RedrawType.Redraw);
+        _penumbraRedraw.Invoke(0, setting: RedrawType.Redraw);
     }
 }

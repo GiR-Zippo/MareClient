@@ -74,7 +74,6 @@ public static class VariousExtensions
             bool hasNewButNotOldGlamourerData = newGlamourerData != null && existingGlamourerData == null;
             bool hasOldButNotNewGlamourerData = existingGlamourerData != null && newGlamourerData == null;
 
-            bool hasNewAndOldFileReplacements = newFileReplacements != null && existingFileReplacements != null;
             bool hasNewAndOldGlamourerData = newGlamourerData != null && existingGlamourerData != null;
 
             if (hasNewButNotOldFileReplacements || hasOldButNotNewFileReplacements || hasNewButNotOldGlamourerData || hasOldButNotNewGlamourerData)
@@ -89,7 +88,7 @@ public static class VariousExtensions
             }
             else
             {
-                if (hasNewAndOldFileReplacements)
+                if (existingFileReplacements != null && newFileReplacements != null)
                 {
                     bool listsAreEqual = oldData.FileReplacements[objectKind].SequenceEqual(newData.FileReplacements[objectKind], PlayerData.Data.FileReplacementDataComparer.Instance);
                     if (!listsAreEqual || forceApplyMods)

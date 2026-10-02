@@ -353,9 +353,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
                 if (_downloadServersTask == null || ((_downloadServersTask?.IsCompleted ?? false) && (!_downloadServersTask?.IsCompletedSuccessfully ?? false)))
                 {
                     if (_uiShared.IconTextButton(FontAwesomeIcon.GroupArrowsRotate, "Update Download Server List"))
-                    {
                         _downloadServersTask = GetDownloadServerList();
-                    }
                 }
                 if (_downloadServersTask != null && _downloadServersTask.IsCompleted && !_downloadServersTask.IsCompletedSuccessfully)
                 {
@@ -522,7 +520,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
             {
                 if (result != null)
                 {
-                    var res = await result!.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var res = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
                     speedTestResults.Add($"{server}: {ex.Message} - {res}");
                 }
             }
@@ -1456,7 +1454,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
                                 }
                                 else
                                 {
-                                    UiSharedService.ColorTextWrapped(text, textColor!.Value);
+                                    UiSharedService.ColorTextWrapped(text, textColor.Value);
                                 }
                                 if (!_secretKeysConversionTask.Result.Success || _secretKeysConversionTask.Result.PartialSuccess)
                                 {
@@ -1937,7 +1935,7 @@ public class SettingsUi : WindowMediatorSubscriberBase
     {
         if (_apiController.ServerState is ServerState.Connected)
         {
-            ImGui.TextUnformatted("Service " + _serverConfigurationManager.CurrentServer!.ServerName + ":");
+            ImGui.TextUnformatted("Service " + _serverConfigurationManager.CurrentServer.ServerName + ":");
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.ParsedGreen, "Available");
             ImGui.SameLine();

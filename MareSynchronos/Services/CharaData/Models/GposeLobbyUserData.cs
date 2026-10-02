@@ -81,10 +81,10 @@ public sealed record GposeLobbyUserData(UserData UserData)
         if (DeltaPoseData == null && FullPoseData != null) return FullPoseData;
         if (FullPoseData == null) return null;
 
-        PoseData output = FullPoseData!.Value.DeepClone();
+        PoseData output = FullPoseData.Value.DeepClone();
         PoseData delta = DeltaPoseData!.Value;
 
-        foreach (var bone in FullPoseData!.Value.Bones)
+        foreach (var bone in FullPoseData.Value.Bones)
         {
             if (!delta.Bones.TryGetValue(bone.Key, out var data)) continue;
             if (!data.Exists)
@@ -97,7 +97,7 @@ public sealed record GposeLobbyUserData(UserData UserData)
             }
         }
 
-        foreach (var bone in FullPoseData!.Value.MainHand)
+        foreach (var bone in FullPoseData.Value.MainHand)
         {
             if (!delta.MainHand.TryGetValue(bone.Key, out var data)) continue;
             if (!data.Exists)
@@ -110,7 +110,7 @@ public sealed record GposeLobbyUserData(UserData UserData)
             }
         }
 
-        foreach (var bone in FullPoseData!.Value.OffHand)
+        foreach (var bone in FullPoseData.Value.OffHand)
         {
             if (!delta.OffHand.TryGetValue(bone.Key, out var data)) continue;
             if (!data.Exists)

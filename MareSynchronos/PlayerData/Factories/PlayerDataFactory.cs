@@ -210,17 +210,17 @@ public class PlayerDataFactory
             var playerFragment = (fragment as CharacterDataFragmentPlayer)!;
             playerFragment.ManipulationString = _ipcManager.Penumbra.GetMetaManipulations();
 
-            playerFragment!.HonorificData = await getHonorificTitle.ConfigureAwait(false);
-            _logger.LogDebug("Honorific is now: {data}", playerFragment!.HonorificData);
+            playerFragment.HonorificData = await getHonorificTitle.ConfigureAwait(false);
+            _logger.LogDebug("Honorific is now: {data}", playerFragment.HonorificData);
 
-            playerFragment!.HeelsData = await getHeelsOffset.ConfigureAwait(false);
-            _logger.LogDebug("Heels is now: {heels}", playerFragment!.HeelsData);
+            playerFragment.HeelsData = await getHeelsOffset.ConfigureAwait(false);
+            _logger.LogDebug("Heels is now: {heels}", playerFragment.HeelsData);
 
-            playerFragment!.MoodlesData = await _ipcManager.Moodles.GetStatusAsync(playerRelatedObject.Address).ConfigureAwait(false) ?? string.Empty;
-            _logger.LogDebug("Moodles is now: {moodles}", playerFragment!.MoodlesData);
+            playerFragment.MoodlesData = await _ipcManager.Moodles.GetStatusAsync(playerRelatedObject.Address).ConfigureAwait(false) ?? string.Empty;
+            _logger.LogDebug("Moodles is now: {moodles}", playerFragment.MoodlesData);
 
-            playerFragment!.PetNamesData = _ipcManager.PetNames.GetLocalNames();
-            _logger.LogDebug("Pet Nicknames is now: {petnames}", playerFragment!.PetNamesData);
+            playerFragment.PetNamesData = _ipcManager.PetNames.GetLocalNames();
+            _logger.LogDebug("Pet Nicknames is now: {petnames}", playerFragment.PetNamesData);
         }
 
         ct.ThrowIfCancellationRequested();

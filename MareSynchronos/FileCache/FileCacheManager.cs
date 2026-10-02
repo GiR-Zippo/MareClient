@@ -56,7 +56,7 @@ public sealed class FileCacheManager : IHostedService
         _logger.LogTrace("Creating file entry for {path}", path);
         var fullName = fi.FullName.ToLowerInvariant();
         if (!fullName.Contains(_ipcManager.Penumbra.ModDirectory!.ToLowerInvariant(), StringComparison.Ordinal)) return null;
-        string prefixedPath = fullName.Replace(_ipcManager.Penumbra.ModDirectory!.ToLowerInvariant(), PenumbraPrefix + "\\", StringComparison.Ordinal).Replace("\\\\", "\\", StringComparison.Ordinal);
+        string prefixedPath = fullName.Replace(_ipcManager.Penumbra.ModDirectory.ToLowerInvariant(), PenumbraPrefix + "\\", StringComparison.Ordinal).Replace("\\\\", "\\", StringComparison.Ordinal);
         return CreateFileCacheEntity(fi, prefixedPath);
     }
 
@@ -195,8 +195,6 @@ public sealed class FileCacheManager : IHostedService
 
             foreach (var entry in cleanedPaths)
             {
-                //_logger.LogDebug("Checking {path}", entry.Value);
-
                 if (dict.TryGetValue(entry.Value, out var entity))
                 {
                     var validatedCache = GetValidatedFileCache(entity);
@@ -317,15 +315,10 @@ public sealed class FileCacheManager : IHostedService
     private void AddHashedFile(FileCacheEntity fileCache)
     {
         if (!_fileCaches.TryGetValue(fileCache.Hash, out var entries) || entries is null)
-        {
             _fileCaches[fileCache.Hash] = entries = [];
-        }
 
         if (!entries.Exists(u => string.Equals(u.PrefixedFilePath, fileCache.PrefixedFilePath, StringComparison.OrdinalIgnoreCase)))
-        {
-            //_logger.LogTrace("Adding to DB: {hash} => {path}", fileCache.Hash, fileCache.PrefixedFilePath);
             entries.Add(fileCache);
-        }
     }
 
     private FileCacheEntity? CreateFileCacheEntity(FileInfo fileInfo, string prefixedPath, string? hash = null)
@@ -346,7 +339,6 @@ public sealed class FileCacheManager : IHostedService
     private FileCacheEntity? GetValidatedFileCache(FileCacheEntity fileCache)
     {
         var resultingFileCache = ReplacePathPrefixes(fileCache);
-        //_logger.LogTrace("Validating {path}", fileCache.PrefixedFilePath);
         resultingFileCache = Validate(resultingFileCache);
         return resultingFileCache;
     }

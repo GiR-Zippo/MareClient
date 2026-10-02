@@ -142,7 +142,7 @@ public class StandaloneProfileUi : WindowMediatorSubscriberBase
             if (Pair.UserPair?.Groups.Count != 0)
             {
                 ImGui.TextUnformatted("Paired through Syncshells:");
-                foreach (var group in Pair.UserPair.Groups)
+                foreach (var group in Pair.UserPair!.Groups)
                 {
                     var groupNote = _serverManager.GetNoteForGid(group);
                     var groupName = _pairManager.GroupPairs.First(f => string.Equals(f.Key.GID, group, StringComparison.Ordinal)).Key.GroupAliasOrGID;

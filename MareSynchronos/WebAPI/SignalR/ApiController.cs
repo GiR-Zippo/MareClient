@@ -336,11 +336,11 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
         _ = Task.Run(async () =>
         {
             var pair = _pairManager.GetOnlineUserPairs().Single(p => p.UserPair != null && p.UserData == userData);
-            var perm = pair.UserPair!.OwnPermissions;
+            var perm = pair.UserPair.OwnPermissions;
             perm.SetPaused(paused: true);
             await UserSetPairPermissions(new UserPermissionsDto(userData, perm)).ConfigureAwait(false);
             // wait until it's changed
-            while (pair.UserPair!.OwnPermissions != perm)
+            while (pair.UserPair.OwnPermissions != perm)
             {
                 await Task.Delay(250, cts.Token).ConfigureAwait(false);
                 Logger.LogTrace("Waiting for permissions change for {data}", userData);
@@ -355,7 +355,7 @@ public sealed partial class ApiController : DisposableMediatorSubscriberBase, IM
     public async Task PauseAsync(UserData userData)
     {
         var pair = _pairManager.GetOnlineUserPairs().Single(p => p.UserPair != null && p.UserData == userData);
-        var perm = pair.UserPair!.OwnPermissions;
+        var perm = pair.UserPair.OwnPermissions;
         perm.SetPaused(paused: true);
         await UserSetPairPermissions(new UserPermissionsDto(userData, perm)).ConfigureAwait(false);
     }
