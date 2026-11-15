@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Command;
+﻿using Aurora.UI.Settings;
+using Dalamud.Game.Command;
 using Dalamud.Plugin.Services;
 using MareSynchronos.FileCache;
 using MareSynchronos.MareConfiguration;

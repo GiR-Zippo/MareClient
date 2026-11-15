@@ -32,6 +32,7 @@ using MareSynchronos.Services.CharaData;
 using Dalamud.Game;
 using System.IO;
 using System.Net.Http;
+using Aurora.UI.Settings;
 
 namespace MareSynchronos;
 
@@ -215,7 +216,7 @@ public sealed class Plugin : IDalamudPlugin
 
             collection.AddScoped<WindowMediatorSubscriberBase, EditProfileUi>((s) => new EditProfileUi(s.GetRequiredService<ILogger<EditProfileUi>>(),
                 s.GetRequiredService<MareMediator>(), s.GetRequiredService<ApiController>(), s.GetRequiredService<UiSharedService>(), s.GetRequiredService<FileDialogManager>(),
-                s.GetRequiredService<MareProfileManager>(), s.GetRequiredService<PerformanceCollectorService>()));
+                s.GetRequiredService<MareProfileManager>(), s.GetRequiredService<PerformanceCollectorService>(), textureProvider));
             collection.AddScoped<WindowMediatorSubscriberBase, PopupHandler>();
             collection.AddScoped<IPopupHandler, BanUserPopupHandler>();
             collection.AddScoped<IPopupHandler, CensusPopupHandler>();

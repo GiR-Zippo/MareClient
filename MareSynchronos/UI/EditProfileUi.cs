@@ -4,14 +4,14 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
+using Dalamud.Plugin.Services;
 using MareSynchronos.API.Data;
 using MareSynchronos.API.Dto.User;
 using MareSynchronos.Services;
 using MareSynchronos.Services.Mediator;
 using MareSynchronos.WebAPI;
 using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using System.Buffers.Binary;
 using System.IO;
 
 namespace MareSynchronos.UI;
@@ -22,6 +22,7 @@ public class EditProfileUi : WindowMediatorSubscriberBase
     private readonly FileDialogManager _fileDialogManager;
     private readonly MareProfileManager _mareProfileManager;
     private readonly UiSharedService _uiSharedService;
+    private readonly ITextureProvider _textureProvider;
     private bool _adjustedForScollBarsLocalProfile = false;
     private bool _adjustedForScollBarsOnlineProfile = false;
     private string _descriptionText = string.Empty;
@@ -33,7 +34,7 @@ public class EditProfileUi : WindowMediatorSubscriberBase
 
     public EditProfileUi(ILogger<EditProfileUi> logger, MareMediator mediator,
         ApiController apiController, UiSharedService uiSharedService, FileDialogManager fileDialogManager,
-        MareProfileManager mareProfileManager, PerformanceCollectorService performanceCollectorService)
+        MareProfileManager mareProfileManager, PerformanceCollectorService performanceCollectorService, ITextureProvider textureProvider)
         : base(logger, mediator, "Mare Synchronos Edit Profile###MareSynchronosEditProfileUI", performanceCollectorService)
     {
         IsOpen = false;
@@ -46,6 +47,7 @@ public class EditProfileUi : WindowMediatorSubscriberBase
         _uiSharedService = uiSharedService;
         _fileDialogManager = fileDialogManager;
         _mareProfileManager = mareProfileManager;
+        _textureProvider = textureProvider;
 
         Mediator.Subscribe<GposeStartMessage>(this, (_) => { _wasOpen = IsOpen; IsOpen = false; });
         Mediator.Subscribe<GposeEndMessage>(this, (_) => IsOpen = _wasOpen);
@@ -140,18 +142,26 @@ public class EditProfileUi : WindowMediatorSubscriberBase
                 if (!success) return;
                 _ = Task.Run(async () =>
                 {
-                    var fileContent = File.ReadAllBytes(file);
-                    using MemoryStream ms = new(fileContent);
-                    var format = await Image.DetectFormatAsync(ms).ConfigureAwait(false);
-                    if (!format.FileExtensions.Contains("png", StringComparer.OrdinalIgnoreCase))
+                    var fileContent = await File.ReadAllBytesAsync(file).ConfigureAwait(false);
+
+                    if (fileContent.Length > 250 * 1024 || !IsPng(fileContent))
                     {
                         _showFileDialogError = true;
                         return;
                     }
-                    using var image = Image.Load<Rgba32>(fileContent);
 
-                    if (image.Width > 256 || image.Height > 256 || (fileContent.Length > 250 * 1024))
+                    try
                     {
+                        using var tex = await _textureProvider.CreateFromImageAsync(fileContent).ConfigureAwait(false);
+                        if (tex.Width > 256 || tex.Height > 256)
+                        {
+                            _showFileDialogError = true;
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Profile picture could not be decoded");
                         _showFileDialogError = true;
                         return;
                     }
@@ -224,6 +234,13 @@ public class EditProfileUi : WindowMediatorSubscriberBase
             _ = _apiController.UserSetProfile(new UserProfileDto(new UserData(_apiController.UID), Disabled: false, IsNSFW: null, ProfilePictureBase64: null, ""));
         }
         UiSharedService.AttachToolTip("Clears your profile description text");
+    }
+
+
+    private static bool IsPng(byte[] data)
+    {
+        ReadOnlySpan<byte> signature = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+        return data.Length >= 8 && data.AsSpan(0, 8).SequenceEqual(signature);
     }
 
     protected override void Dispose(bool disposing)

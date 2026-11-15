@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface;
+﻿using Aurora.UI.Settings;
+using Dalamud.Interface;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
 using MareSynchronos.MareConfiguration;

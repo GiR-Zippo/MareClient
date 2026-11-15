@@ -1,4 +1,5 @@
-﻿using Dalamud.Bindings.ImGui;
+﻿using Aurora.UI.Settings;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;

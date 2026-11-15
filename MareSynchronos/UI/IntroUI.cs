@@ -318,7 +318,7 @@ public partial class IntroUi : WindowMediatorSubscriberBase
 
     private void DrawDiscordAuth()
     {
-        int serverIdx = 0;
+        serverIdx = 0;
         var selectedServer = _serverConfigurationManager.GetServerByIndex(serverIdx);
         UiSharedService.TextWrapped("That's left here for historical resons...");
         UiSharedService.TextWrapped("For some Servers the account creation will be handled on their Discord. Due to security risks for the server, there is no way to handle this sensibly otherwise.");
